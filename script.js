@@ -1,5 +1,6 @@
 "use strict";
 
+// creates a gameboard object
 const gameBoard = (() => {
     const row1 = [null, null, null];
     const row2 = [null, null, null];
@@ -11,9 +12,14 @@ const gameBoard = (() => {
     };
 })();
 
+// creates a player object
 const createPlayer = (name, symbol) => {
     return {
         name,
         symbol,
     }
 }
+
+// create two players
+const player1 = createPlayer("Player 1", "X");
+const player2 = createPlayer("Player 2", "O");
