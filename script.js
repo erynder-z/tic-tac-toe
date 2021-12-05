@@ -10,3 +10,10 @@ const gameBoard = (() => {
         row3,
     };
 })();
+
+const createPlayer = (name, symbol) => {
+    return {
+        name,
+        symbol,
+    }
+}
