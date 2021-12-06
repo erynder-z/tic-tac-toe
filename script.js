@@ -5,12 +5,15 @@ const gameBoardModule = (() => {
             const gameBoardArray = ["X", "O", "X", "0", "0", "0", "X", "X", "X"];
             const gameBoard = document.getElementById("gameboard");
             const cells = document.querySelectorAll("[data-cell]");
-            cells.forEach(cell => {
+            // check whose turn it is
+            // currentPlayerMarkt = mark of the current player
+/*             cells.forEach(cell => {
                 cell.addEventListener("click", something, {once: true});
             });
-            function something(event) { 
-                console.log("test"); // add symbol of the current player
-            }
+            function something() { 
+                console.log(this.dataset.index);
+                this.textContent = currentPlayerMark;
+            } */
             return {
                 gameBoardArray,
                 gameBoard,
@@ -19,10 +22,10 @@ const gameBoardModule = (() => {
 })();
 
 // creates a player object
-const createPlayer = (playerName, symbol) => {
+const createPlayer = (playerName, mark) => {
     return {
         playerName,
-        symbol,
+        mark,
     }
 }
 
@@ -32,9 +35,18 @@ const renderGameBoard = () => {
         gameBoardModule.cells[i].textContent = item;
     });
     }
+    
+const playGameModule = () => {
+    gameBoardModule.cells.forEach(cell => {
+        cell.addEventListener("click", something, {once: true});
+    });
+    function something() { 
+        console.log(this.dataset.index);
+        this.textContent = currentPlayerMark;
+    }
+}
 
 // define winning conditions
-// define whose turn it is
 // check if winning condition is met
 // switch players
 // announce winner
