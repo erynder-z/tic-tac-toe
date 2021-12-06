@@ -1,24 +1,33 @@
 "use strict";
 
 // creates a gameboard object
-const gameBoard = (() => {
-    const gameBoardArray = [null, null, null, null, null, null, null, null, null];
-    return {
-        gameBoardArray
+const gameBoardModule = (() => {
+            const gameBoardArray = ["X", "X", "X", "0", "0", "0", "X", "X", "X"];
+            const gameBoard = document.getElementById("gameboard");
+            const cells = document.querySelectorAll("[data-cell]");
+            cells.forEach(cell => {
+                cell.addEventListener("click", something, {
+                    once: true
+                })
+            });
+
+            function something(event) {
+                console.log("clicked");
+            }
+            return {
+                gameBoardArray,
+                gameBoard,
+                cells,
     };
 })();
 
 // creates a player object
-const createPlayer = (name, symbol) => {
+const createPlayer = (playerName, symbol) => {
     return {
-        name,
+        playerName,
         symbol,
     }
 }
-
-// create two players
-const player1 = createPlayer("Player 1", "X");
-const player2 = createPlayer("Player 2", "O");
 
 // define winning conditions
 // define whose turn it is
