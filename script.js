@@ -2,13 +2,9 @@
 
 // creates a gameboard object
 const gameBoard = (() => {
-    const row1 = [null, null, null];
-    const row2 = [null, null, null];
-    const row3 = [null, null, null];
+    const gameBoardArray = [null, null, null, null, null, null, null, null, null];
     return {
-        row1,
-        row2,
-        row3,
+        gameBoardArray
     };
 })();
 
@@ -23,3 +19,9 @@ const createPlayer = (name, symbol) => {
 // create two players
 const player1 = createPlayer("Player 1", "X");
 const player2 = createPlayer("Player 2", "O");
+
+// define winning conditions
+// define whose turn it is
+// check if winning condition is met
+// switch players
+// announce winner
