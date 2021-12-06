@@ -25,4 +25,8 @@ body {
     width: 100px;
     height: 100px;
     border: solid 2px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5em;
 }
