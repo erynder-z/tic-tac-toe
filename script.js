@@ -6,9 +6,7 @@ const gameBoardModule = (() => {
             const gameBoard = document.getElementById("gameboard");
             const cells = document.querySelectorAll("[data-cell]");
             cells.forEach(cell => {
-                cell.addEventListener("click", something, {
-                    once: true
-                })
+                cell.addEventListener("click", something, {once: true});
             });
 
             function something(event) {
