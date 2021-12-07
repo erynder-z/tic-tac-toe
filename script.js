@@ -4,7 +4,7 @@ let activePlayer;
 
 // creates a gameboard object
 const gameBoardModule = (() => {
-            const gameBoardArray = ["X", "O", "X", "0", "0", "0", "X", "X", "X"];
+            const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
             const gameBoard = document.getElementById("gameboard");
             const cells = document.querySelectorAll("[data-cell]");
             return {
@@ -33,7 +33,7 @@ const playGameModule = (() => {
     // create two players
     const player1 = createPlayer("Player 1", "X");
     const player2 = createPlayer("Player 2", "O");
-    // create a siomple counter that determines who the currently active player is
+    // create a simple counter that determines who the currently active player is
     let count = 0;
     const getActivePlayer = () => {
         if (count % 2 === 0) {
@@ -45,13 +45,14 @@ const playGameModule = (() => {
     }
     // eventListeners for every gameboard-cell
     gameBoardModule.cells.forEach(cell => {
-        cell.addEventListener("click", handleClick, {once: true});
+        cell.addEventListener("click", handleClick, {once: true}); //let the eventListener fire only once for the according cell
     });
 
-    // get the currently active player and places this palyer's mark in the according cell
+    // get the currently active player and inserts the players mark at the corresponding position in the gameBoardArray
     function handleClick() {
         getActivePlayer();
-        this.textContent = activePlayer.mark;
+        gameBoardModule.gameBoardArray.splice(this.dataset.index-1, 1, activePlayer.mark);
+        renderGameBoard();
     }
 })();
 
