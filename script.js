@@ -1,5 +1,8 @@
 "use strict";
 
+let activePlayer;
+let count = 0;
+
 // creates a gameboard object
 const gameBoardModule = (() => {
             const gameBoardArray = ["X", "O", "X", "0", "0", "0", "X", "X", "X"];
@@ -19,8 +22,10 @@ const createPlayer = (playerName, mark) => {
         mark,
         
     }
-
 }
+
+const player1 = createPlayer("Player 1", "X");
+const player2 = createPlayer("Player 2", "O");
 
 // render gameBoard-data
 const renderGameBoard = () => {
@@ -29,16 +34,24 @@ const renderGameBoard = () => {
     });
 }
 
+const getActivePlayer = () => {
+    if (count % 2 === 0) {
+        activePlayer = player1;
+    } else {
+        activePlayer = player2;
+    }
+     count++;
+}
+
 // Logic for the gameflow    
 const playGameModule = (() => {
-    // check whose turn it is
     gameBoardModule.cells.forEach(cell => {
         cell.addEventListener("click", handleClick, {once: true});
     });
 
     function handleClick() {
-        console.log(this.dataset.index);
-        this.textContent = "X";
+        getActivePlayer();
+        this.textContent = activePlayer.mark;
     }
 })();
 
