@@ -18,8 +18,7 @@ const gameBoardModule = (() => {
 const createPlayer = (playerName, mark) => {
     return {
         playerName,
-        mark,
-        
+        mark,     
     }
 }
 
@@ -41,13 +40,13 @@ const playGameModule = (() => {
         } else {
             activePlayer = player2;
         }
-         count++;
+        count++;
     }
 
     gameBoardModule.cells.forEach(cell => {
         cell.addEventListener("click", handleClick, {once: true});
     });
-    
+
 
     function handleClick() {
         getActivePlayer();
