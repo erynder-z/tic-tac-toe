@@ -30,9 +30,10 @@ const renderGameBoard = () => {
 }
 // Logic for the gameflow    
 const playGameModule = (() => {
+    // create two players
     const player1 = createPlayer("Player 1", "X");
     const player2 = createPlayer("Player 2", "O");
-
+    // create a siomple counter that determines who the currently active player is
     let count = 0;
     const getActivePlayer = () => {
         if (count % 2 === 0) {
@@ -42,12 +43,12 @@ const playGameModule = (() => {
         }
         count++;
     }
-
+    // eventListeners for every gameboard-cell
     gameBoardModule.cells.forEach(cell => {
         cell.addEventListener("click", handleClick, {once: true});
     });
 
-
+    // get the currently active player and places this palyer's mark in the according cell
     function handleClick() {
         getActivePlayer();
         this.textContent = activePlayer.mark;
@@ -56,5 +57,4 @@ const playGameModule = (() => {
 
 // define winning conditions
 // check if winning condition is met
-// switch players
 // announce winner
