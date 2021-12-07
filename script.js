@@ -23,27 +23,16 @@ const createPlayer = (playerName, mark) => {
     }
 }
 
-const player1 = createPlayer("Player 1", "X");
-const player2 = createPlayer("Player 2", "O");
-
 // render gameBoard-data
 const renderGameBoard = () => {
     gameBoardModule.gameBoardArray.forEach(function (item, i) {
         gameBoardModule.cells[i].textContent = item;
     });
 }
-
-/* const getActivePlayer = () => {
-    if (count % 2 === 0) {
-        activePlayer = player1;
-    } else {
-        activePlayer = player2;
-    }
-     count++;
-}
- */
 // Logic for the gameflow    
 const playGameModule = (() => {
+    const player1 = createPlayer("Player 1", "X");
+    const player2 = createPlayer("Player 2", "O");
 
     let count = 0;
     const getActivePlayer = () => {
