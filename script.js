@@ -17,7 +17,9 @@ const createPlayer = (playerName, mark) => {
     return {
         playerName,
         mark,
+        
     }
+
 }
 
 // render gameBoard-data
@@ -28,7 +30,7 @@ const renderGameBoard = () => {
 }
 
 // Logic for the gameflow    
-const playGameModule = () => {
+const playGameModule = (() => {
     // check whose turn it is
     gameBoardModule.cells.forEach(cell => {
         cell.addEventListener("click", handleClick, {once: true});
@@ -38,7 +40,7 @@ const playGameModule = () => {
         console.log(this.dataset.index);
         this.textContent = "X";
     }
-}
+})();
 
 // define winning conditions
 // check if winning condition is met
