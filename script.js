@@ -1,7 +1,6 @@
 "use strict";
 
 let activePlayer;
-let count = 0;
 
 // creates a gameboard object
 const gameBoardModule = (() => {
@@ -34,7 +33,7 @@ const renderGameBoard = () => {
     });
 }
 
-const getActivePlayer = () => {
+/* const getActivePlayer = () => {
     if (count % 2 === 0) {
         activePlayer = player1;
     } else {
@@ -42,12 +41,24 @@ const getActivePlayer = () => {
     }
      count++;
 }
-
+ */
 // Logic for the gameflow    
 const playGameModule = (() => {
+
+    let count = 0;
+    const getActivePlayer = () => {
+        if (count % 2 === 0) {
+            activePlayer = player1;
+        } else {
+            activePlayer = player2;
+        }
+         count++;
+    }
+
     gameBoardModule.cells.forEach(cell => {
         cell.addEventListener("click", handleClick, {once: true});
     });
+    
 
     function handleClick() {
         getActivePlayer();
