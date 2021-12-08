@@ -54,7 +54,6 @@ const playGameModule = (() => {
         gameBoardModule.gameBoardArray.forEach(function (item, i) {
             gameBoardModule.cells[i].textContent = item;
         });
-        console.log("render");
     }
     // eventListeners for every gameboard-cell
     gameBoardModule.cells.forEach(cell => {
@@ -67,7 +66,7 @@ const playGameModule = (() => {
         gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
         renderGameBoard();
         checkForWinner();
-        //checkForDraw();
+        checkForTie();
     }
 
     // check if activePlayer has a winning combination in the gameBoardArray
@@ -79,21 +78,32 @@ const playGameModule = (() => {
         ////// better done with an array method??
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
             if (JSON.stringify(gameBoardModule.winningCombinations[i]) == JSON.stringify(currentMarkIndexes)) {
-                setTimeout(winTheGame, 100); // prevents the winner beeing announced before gameboard is rendered
+                setTimeout(winTheGame, 100); // prevents the winner beeing announced before gameboard is rendered. There surely is a better way
                 return
             }
-        }
+        } 
 
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
-            console.log("check");
             resetGame();
         }
+    }
+
+    const checkForTie = () => {
+        if (count === 9) {
+            setTimeout(gameTie, 100);
+        }
+    }
+
+    function gameTie() {
+        alert("It's a tie! You are both winners! =)");
+        resetGame();
     }
 
     // reset the game
     const resetGame = () => {
         activePlayer = undefined;
+        count = 0;
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         renderGameBoard();
     }
