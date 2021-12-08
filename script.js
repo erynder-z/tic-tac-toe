@@ -38,6 +38,7 @@ const renderGameBoard = () => {
     gameBoardModule.gameBoardArray.forEach(function (item, i) {
         gameBoardModule.cells[i].textContent = item;
     });
+    console.log("render");
 }
 // Logic for the gameflow    
 const playGameModule = (() => {
@@ -65,6 +66,7 @@ const playGameModule = (() => {
         gameBoardModule.gameBoardArray.splice(this.dataset.index-1, 1, activePlayer.mark);
         renderGameBoard();
         checkForWinner();
+        //checkForDraw();
     }
 
     // check if activePlayer has a winning combination in the gameBoardArray
@@ -76,8 +78,14 @@ const playGameModule = (() => {
         ////// better done with an array method??
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
             if (JSON.stringify(gameBoardModule.winningCombinations[i]) == JSON.stringify(currentMarkIndexes)) {
-                announceWinner(activePlayer);               
+                setTimeout(winTheGame, 100);
+                return         
             }
+        }   
+        function winTheGame() {
+            alert(`${activePlayer.playerName} has won the round`);
+                console.log("check");
+                resetGame();
         }
     
     }
