@@ -4,24 +4,24 @@ let activePlayer;
 
 // creates a gameboard object
 const gameBoardModule = (() => {
-            const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
-            const winningCombinations = [
-                [0, 1, 2],
-                [3, 4, 5],
-                [6, 7, 8],
-                [0, 3, 6],
-                [1, 4, 7],
-                [2, 5, 8],
-                [0, 4, 8],
-                [2, 4, 6]
-            ]
-            const gameBoard = document.getElementById("gameboard");
-            const cells = document.querySelectorAll("[data-cell]");
-            return {
-                gameBoardArray,
-                gameBoard,
-                cells,
-                winningCombinations,
+    const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
+    const gameBoard = document.getElementById("gameboard");
+    const cells = document.querySelectorAll("[data-cell]");
+    return {
+        gameBoardArray,
+        gameBoard,
+        cells,
+        winningCombinations,
     };
 })();
 
@@ -29,17 +29,10 @@ const gameBoardModule = (() => {
 const createPlayer = (playerName, mark) => {
     return {
         playerName,
-        mark,     
+        mark,
     }
 }
 
-// render gameBoard-data
-const renderGameBoard = () => {
-    gameBoardModule.gameBoardArray.forEach(function (item, i) {
-        gameBoardModule.cells[i].textContent = item;
-    });
-    console.log("render");
-}
 // Logic for the gameflow    
 const playGameModule = (() => {
     // create two players
@@ -55,6 +48,14 @@ const playGameModule = (() => {
         }
         count++;
     }
+
+    // render gameBoard-data
+    const renderGameBoard = () => {
+        gameBoardModule.gameBoardArray.forEach(function (item, i) {
+            gameBoardModule.cells[i].textContent = item;
+        });
+        console.log("render");
+    }
     // eventListeners for every gameboard-cell
     gameBoardModule.cells.forEach(cell => {
         cell.addEventListener("click", handleClick, {once: true}); //let the eventListener fire only once for the according cell
@@ -63,7 +64,7 @@ const playGameModule = (() => {
     // get the currently active player and inserts the players mark at the corresponding position in the gameBoardArray
     function handleClick() {
         getActivePlayer();
-        gameBoardModule.gameBoardArray.splice(this.dataset.index-1, 1, activePlayer.mark);
+        gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
         renderGameBoard();
         checkForWinner();
         //checkForDraw();
@@ -78,16 +79,23 @@ const playGameModule = (() => {
         ////// better done with an array method??
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
             if (JSON.stringify(gameBoardModule.winningCombinations[i]) == JSON.stringify(currentMarkIndexes)) {
-                setTimeout(winTheGame, 100);
-                return         
+                setTimeout(winTheGame, 100); // prevents the winner beeing announced before gameboard is rendered
+                return
             }
-        }   
+        }
+
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
-                console.log("check");
-                resetGame();
+            console.log("check");
+            resetGame();
         }
-    
+    }
+
+    // reset the game
+    const resetGame = () => {
+        activePlayer = undefined;
+        gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+        renderGameBoard();
     }
 })();
 
