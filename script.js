@@ -5,12 +5,23 @@ let activePlayer;
 // creates a gameboard object
 const gameBoardModule = (() => {
             const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ]
             const gameBoard = document.getElementById("gameboard");
             const cells = document.querySelectorAll("[data-cell]");
             return {
                 gameBoardArray,
                 gameBoard,
                 cells,
+                winningCombinations,
     };
 })();
 
@@ -53,6 +64,22 @@ const playGameModule = (() => {
         getActivePlayer();
         gameBoardModule.gameBoardArray.splice(this.dataset.index-1, 1, activePlayer.mark);
         renderGameBoard();
+        checkForWinner();
+    }
+
+    // check if activePlayer has a winning combination in the gameBoardArray
+    const checkForWinner = () => {
+        // checks gameBoardArray for all of currentplayers' marks and saves their indexes in a new array
+        const currentMarkIndexes = [];
+        gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : null);
+        // compares the currentMarkIndexes with the winningComnbinations and declares a win if a match is detected
+        ////// better done with an array method??
+        for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
+            if (JSON.stringify(gameBoardModule.winningCombinations[i]) == JSON.stringify(currentMarkIndexes)) {
+                announceWinner(activePlayer);               
+            }
+        }
+    
     }
 })();
 
