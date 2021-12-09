@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,28 +9,29 @@
     <script src="script.js" defer></script>
     <title>Tic-Tac-Toe</title>
 </head>
+
 <body>
     <h1>A simple tic-tac-toe game.</h1>
     <div id="newGame-modal" class="modal">
         <div class="modal-content">
             <span class="head">Setup</span>
             <div class="player-container">
-            <div class="p1-container-inner">
-             <h1>X</h1>
-            <h2>Player 1 Name:</h2>
-            <input type="text" id="nameInputP1" placeholder="Your name">
-        </div>
-        <div class="p2-container-inner">
-            <h1>O</h1>
-            <h2>Player 2 Name:</h2>
-            <input type="text" id="nameInputP2" placeholder="Your name">   
-            <div class="checkContainer">        
-            <input type="checkbox" id="aiCheck" name="AI" unchecked>
-            <label id="aiCheckLabel" for="AI">AI</label>
-        </div>
-        </div>
-    </div>
-            <div id="startBtn" class="start">START</div>          
+                <div class="p1-container-inner">
+                    <h1>X</h1>
+                    <h2>Player 1 Name:</h2>
+                    <input type="text" id="nameInputP1" placeholder="Your name">
+                </div>
+                <div class="p2-container-inner">
+                    <h1>O</h1>
+                    <h2>Player 2 Name:</h2>
+                    <input type="text" id="nameInputP2" placeholder="Your name">
+                    <div class="checkContainer">
+                        <input type="checkbox" id="aiCheck" name="AI" unchecked>
+                        <label id="aiCheckLabel" for="AI">AI</label>
+                    </div>
+                </div>
+            </div>
+            <div id="startBtn" class="start">START</div>
         </div>
     </div>
     <div id="player1-name" class="player">Player 1</div>
@@ -49,4 +51,5 @@
     </div>
     <div id="results" class="score"></div>
 </body>
+
 </html>
