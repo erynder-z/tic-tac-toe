@@ -35,9 +35,22 @@ const createPlayer = (playerName, mark) => {
 
 // Logic for the gameflow    
 const playGameModule = (() => {
+    // get player name and mark
+    const getPlayerDetails = () => {
+        const p1Name = document.getElementById("nameInputP1");
+        const p1Mark = document.getElementById("marklInputP1");
+        const p2Name = document.getElementById("nameInputP2");
+        const p2Mark = document.getElementById("marklInputP2");
+        return {
+            p1Name,
+            p1Mark,
+            p2Name,
+            p2Mark,
+        }
+    }
     // create two players
-    const player1 = createPlayer("Player 1", "X");
-    const player2 = createPlayer("Player 2", "O");
+    const player1 = createPlayer(getPlayerDetails.p1Name, getPlayerDetails.p1Mark);
+    const player2 = createPlayer(getPlayerDetails.p2Name, getPlayerDetails.p2Mark);
     // create a simple counter that determines who the currently active player is
     let count = 0;
     const getActivePlayer = () => {
