@@ -10,7 +10,6 @@ body {
 }
 
 .modal {
-    /* display: none; */
     position: fixed;
     z-index: top;
     left: 0;
@@ -97,4 +96,8 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 5em;
+}
+
+.hidden {
+    display: none;
 }
