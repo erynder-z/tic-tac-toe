@@ -10,6 +10,28 @@
 </head>
 <body>
     <h1>A simple tic-tac-toe game.</h1>
+    <div id="newGame-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="player-container">
+            <div class="p1-container">
+            <h2>Player 1 Name:</h2>
+            <input type="text" id="nameInput" placeholder="Your name">
+            <h2>Player 1 Mark:</h2>
+            <input type="text" id="markInput" placeholder="Single character only">
+        </div>
+        <div class="p2-container">
+            <h2>Player 2 Name:</h2>
+            <input type="text" id="nameInput" placeholder="Your name">
+            <h2>Player 2 Mark:</h2>
+            <input type="text" id="markInput" placeholder="Single character only">
+            <input type="checkbox" id="aiCheck" name="AI" unchecked>
+            <label id="aiCheckLabel" for="AI">AI</label>
+        </div>
+    </div>
+            <div id="startBtn" class="start">START</div>          
+        </div>
+    </div>
     <div id="player1-name" class="player">Player 1</div>
     <div id="player1-score" class="score">0</div>
     <div id="Player2" class="player">Player 2</div>
