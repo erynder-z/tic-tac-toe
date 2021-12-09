@@ -36,12 +36,14 @@ const createPlayer = (playerName, mark) => {
 // Logic for the gameflow    
 const playGameModule = (() => {
     // create two players
-    let player1 = createPlayer("player1", "X");
-    let player2 = createPlayer("player2", "O");
+    let player1 = createPlayer("", "X");
+    let player2 = createPlayer("", "O");
     startgame();  
     const getPlayerDetails = () => {
-        player1.playerName = document.getElementById("nameInputP1").value;
-        player2.playerName = document.getElementById("nameInputP2").value;
+        // check if player name field is empty and assign a default name
+        player1.playerName == "" ? player1.playerName = "Player 1" : player1.playerName = document.getElementById("nameInputP1").value;
+        player2.playerName == "" ? player2.playerName = "Player 2" : player2.playerName = document.getElementById("nameInputP2").value;
+
         document.getElementById("player1-name").textContent = player1.playerName;
         document.getElementById("player2-name").textContent = player2.playerName;
     }
