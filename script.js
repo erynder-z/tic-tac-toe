@@ -35,25 +35,28 @@ const createPlayer = (playerName, mark) => {
 
 // Logic for the gameflow    
 const playGameModule = (() => {
-    // create two players
+
     let player1 = createPlayer("", "X");
     let player2 = createPlayer("", "O");
-    startgame();  
-    const getPlayerDetails = () => {
-        // check if player name field is empty and assign a default name
-        player1.playerName == "" ? player1.playerName = "Player 1" : player1.playerName = document.getElementById("nameInputP1").value;
-        player2.playerName == "" ? player2.playerName = "Player 2" : player2.playerName = document.getElementById("nameInputP2").value;
+    startgame();
 
-        document.getElementById("player1-name").textContent = player1.playerName;
-        document.getElementById("player2-name").textContent = player2.playerName;
-    }
-    
+    //  Hide the startup modal
     function startgame() {
         const startButton = document.getElementById("startBtn");
         const getModal = document.getElementById("newGame-modal");
         startButton.addEventListener("click", () => {
             getModal.classList.add("hidden");
             getPlayerDetails();
+
+            //get player names from input fields
+            const getPlayerDetails = () => {
+                // check if player name field is empty and assign a default name
+                player1.playerName == "" ? player1.playerName = "Player 1" : player1.playerName = document.getElementById("nameInputP1").value;
+                player2.playerName == "" ? player2.playerName = "Player 2" : player2.playerName = document.getElementById("nameInputP2").value;
+                //update Playernames in the DOM
+                document.getElementById("player1-name").textContent = player1.playerName;
+                document.getElementById("player2-name").textContent = player2.playerName;
+            }
         });
     }
 
@@ -100,7 +103,7 @@ const playGameModule = (() => {
                 setTimeout(winTheGame, 100); // prevents the winner beeing announced before gameboard is rendered. There surely is a better way
                 return
             }
-        } 
+        }
 
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
@@ -127,7 +130,3 @@ const playGameModule = (() => {
         renderGameBoard();
     }
 })();
-
-// define winning conditions
-// check if winning condition is met
-// announce winner
