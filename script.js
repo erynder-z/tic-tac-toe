@@ -38,12 +38,12 @@ const playGameModule = (() => {
     // create two players
     let player1 = createPlayer("player1", "X");
     let player2 = createPlayer("player2", "O");
-    startgame();
+    startgame();  
     const getPlayerDetails = () => {
         player1.playerName = document.getElementById("nameInputP1").value;
         player2.playerName = document.getElementById("nameInputP2").value;
-        console.log(player2);
-
+        document.getElementById("player1-name").textContent = player1.playerName;
+        document.getElementById("player2-name").textContent = player2.playerName;
     }
     
     function startgame() {
