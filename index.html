@@ -14,19 +14,19 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="player-container">
-            <div class="p1-container">
+            <div class="p1-container-inner">
+             <h1>X</h1>
             <h2>Player 1 Name:</h2>
             <input type="text" id="nameInputP1" placeholder="Your name">
-            <h2>Player 1 Mark:</h2>
-            <input type="text" id="markInputP1" placeholder="Single character only">
         </div>
-        <div class="p2-container">
+        <div class="p2-container-inner">
+            <h1>O</h1>
             <h2>Player 2 Name:</h2>
-            <input type="text" id="nameInputP2" placeholder="Your name">
-            <h2>Player 2 Mark:</h2>
-            <input type="text" id="markInputP2" placeholder="Single character only">
+            <input type="text" id="nameInputP2" placeholder="Your name">   
+            <div class="checkContainer">        
             <input type="checkbox" id="aiCheck" name="AI" unchecked>
             <label id="aiCheckLabel" for="AI">AI</label>
+        </div>
         </div>
     </div>
             <div id="startBtn" class="start">START</div>          
@@ -34,7 +34,7 @@
     </div>
     <div id="player1-name" class="player">Player 1</div>
     <div id="player1-score" class="score">0</div>
-    <div id="Player2" class="player">Player 2</div>
+    <div id="player2-name" class="player">Player 2</div>
     <div id="player2-score" class="score">0</div>
     <div id="gameboard" class="board">
         <div class="cell" data-cell data-index="1"></div>
