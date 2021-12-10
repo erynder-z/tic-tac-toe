@@ -1,7 +1,5 @@
 "use strict";
 
-let activePlayer;
-
 // creates a gameboard object
 const gameBoardModule = (() => {
     const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
@@ -63,6 +61,7 @@ const playGameModule = (() => {
     }
 
     // create a simple counter that determines who the currently active player is
+    let activePlayer;
     let count = 0;
     const getActivePlayer = () => {
         if (count % 2 === 0) {
