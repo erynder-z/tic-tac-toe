@@ -110,7 +110,7 @@ const playGameModule = (() => {
 
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
-            /* resetGame(); */
+            showResetbutton();
         }
     }
 
@@ -122,8 +122,17 @@ const playGameModule = (() => {
 
     function gameTie() {
         alert("It's a tie!");
-        /* resetGame(); */
+        showResetbutton();
     }
+    // reset button
+    const showResetbutton = () => {
+            const resetButton = document.getElementById("resetBtn");
+            resetButton.classList.remove("hidden");
+            resetButton.addEventListener("click", () => {
+                resetButton.classList.toggle("hidden");
+                resetGame();
+            });
+}
 
     // reset the game
     const resetGame = () => {

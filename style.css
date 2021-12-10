@@ -139,11 +139,7 @@ body {
     font-size: 5em;
 }
 
-.hidden {
-    display: none;
-}
-
-.resetBtn {
+.reset {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -151,4 +147,8 @@ body {
     width: 100px;
     height: 50px;
     background: tomato;
+}
+
+.hidden {
+    display: none;
 }
