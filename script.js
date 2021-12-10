@@ -49,10 +49,12 @@ const playGameModule = (() => {
             getPlayerDetails();
 
             //get player names from input fields
-            const getPlayerDetails = () => {
+            function getPlayerDetails() {
                 // check if player name field is empty and assign a default name
-                player1.playerName == "" ? player1.playerName = "Player 1" : player1.playerName = document.getElementById("nameInputP1").value;
-                player2.playerName == "" ? player2.playerName = "Player 2" : player2.playerName = document.getElementById("nameInputP2").value;
+                let p1InputField =  document.getElementById("nameInputP1");
+                let p2InputField = document.getElementById("nameInputP2");
+                p1InputField.value == "" ? player1.playerName = "Player 1" : player1.playerName = p1InputField.value;
+                p2InputField.value == "" ? player2.playerName = "Player 2" : player2.playerName = p2InputField.value;
                 //update Playernames in the DOM
                 document.getElementById("player1-name").textContent = player1.playerName;
                 document.getElementById("player2-name").textContent = player2.playerName;
