@@ -131,7 +131,7 @@ const playGameModule = (() => {
     }
 
     function gameTie() {
-        alert("It's a tie! You are both winners! =)");
+        alert("It's a tie!");
         /* resetGame(); */
     }
 
