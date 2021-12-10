@@ -45,12 +45,6 @@ body {
     }
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
 
 .player-container {
     display: flex;
@@ -115,15 +109,23 @@ body {
     
 }
 
+.name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
 .board {
-    width: 100vw;
-    height: 100vh;
+    width: 50vw;
+    height: 50vh;
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
     align-content: center;
     justify-items: center;
     align-items: center;
+    margin: auto;
 }
 
 .cell {
@@ -139,4 +141,14 @@ body {
 
 .hidden {
     display: none;
+}
+
+.resetBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 100px;
+    height: 50px;
+    background: tomato;
 }
