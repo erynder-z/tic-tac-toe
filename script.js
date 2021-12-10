@@ -37,7 +37,6 @@ const playGameModule = (() => {
 
     let player1 = createPlayer("", "X", 0);
     let player2 = createPlayer("", "O", 0);
-    updateScore();
     startgame();
 
     //  Hide the startup modal
@@ -74,13 +73,6 @@ const playGameModule = (() => {
         turn++;
     }
 
-    // create a score counter
-    function updateScore() {
-        const scoreP1_DOM = document.getElementById("player1-score");
-        const scoreP2_DOM = document.getElementById("player2-score");
-        scoreP1_DOM.textContent = player1.score;
-        scoreP2_DOM.textContent = player2.score;
-    }
 
     // render gameBoard-data
     const renderGameBoard = () => {
@@ -118,8 +110,6 @@ const playGameModule = (() => {
 
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
-            activePlayer.score++;
-            updateScore();
             /* resetGame(); */
         }
     }
