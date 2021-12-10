@@ -24,18 +24,20 @@ const gameBoardModule = (() => {
 })();
 
 // creates a player object
-const createPlayer = (playerName, mark) => {
+const createPlayer = (playerName, mark, score) => {
     return {
         playerName,
         mark,
+        score,
     }
 }
 
 // Logic for the gameflow    
 const playGameModule = (() => {
 
-    let player1 = createPlayer("", "X");
-    let player2 = createPlayer("", "O");
+    let player1 = createPlayer("", "X", 0);
+    let player2 = createPlayer("", "O", 0);
+    updateScore();
     startgame();
 
     //  Hide the startup modal
@@ -62,14 +64,22 @@ const playGameModule = (() => {
 
     // create a simple counter that determines who the currently active player is
     let activePlayer;
-    let count = 0;
+    let turn = 0;
     const getActivePlayer = () => {
-        if (count % 2 === 0) {
+        if (turn % 2 === 0) {
             activePlayer = player1;
         } else {
             activePlayer = player2;
         }
-        count++;
+        turn++;
+    }
+
+    // create a score counter
+    function updateScore() {
+        const scoreP1_DOM = document.getElementById("player1-score");
+        const scoreP2_DOM = document.getElementById("player2-score");
+        scoreP1_DOM.textContent = player1.score;
+        scoreP2_DOM.textContent = player2.score;
     }
 
     // render gameBoard-data
@@ -108,25 +118,27 @@ const playGameModule = (() => {
 
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
-            resetGame();
+            activePlayer.score++;
+            updateScore();
+            /* resetGame(); */
         }
     }
 
     const checkForTie = () => {
-        if (count === 9) {
+        if (turn === 9) {
             setTimeout(gameTie, 100);
         }
     }
 
     function gameTie() {
         alert("It's a tie! You are both winners! =)");
-        resetGame();
+        /* resetGame(); */
     }
 
     // reset the game
     const resetGame = () => {
         activePlayer = undefined;
-        count = 0;
+        turn = 0;
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         renderGameBoard();
     }
