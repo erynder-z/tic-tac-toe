@@ -50,7 +50,7 @@ const playGameModule = (() => {
             //get player names from input fields
             function getPlayerDetails() {
                 // check if player name field is empty and assign a default name
-                let p1InputField =  document.getElementById("nameInputP1");
+                let p1InputField = document.getElementById("nameInputP1");
                 let p2InputField = document.getElementById("nameInputP2");
                 p1InputField.value == "" ? player1.playerName = "Player 1" : player1.playerName = p1InputField.value;
                 p2InputField.value == "" ? player2.playerName = "Player 2" : player2.playerName = p2InputField.value;
@@ -111,6 +111,11 @@ const playGameModule = (() => {
         function winTheGame() {
             alert(`${activePlayer.playerName} has won the round`);
             showResetbutton();
+            gameBoardModule.cells.forEach(cell => {
+                cell.removeEventListener("click", handleClick, {
+                    once: true
+                });
+            });
         }
     }
 
@@ -123,16 +128,20 @@ const playGameModule = (() => {
     function gameTie() {
         alert("It's a tie!");
         showResetbutton();
+        gameBoardModule.cells.forEach(cell => {
+            cell.removeEventListener("click", handleClick);
+        });
     }
+
     // reset button
     const showResetbutton = () => {
-            const resetButton = document.getElementById("resetBtn");
-            resetButton.classList.remove("hidden");
-            resetButton.addEventListener("click", () => {
-                resetButton.classList.toggle("hidden");
-                resetGame();
-            });
-}
+        const resetButton = document.getElementById("resetBtn");
+        resetButton.classList.remove("hidden");
+        resetButton.addEventListener("click", () => {
+            resetButton.classList.toggle("hidden");
+            resetGame();
+        });
+    }
 
     // reset the game
     const resetGame = () => {
@@ -140,5 +149,8 @@ const playGameModule = (() => {
         turn = 0;
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         renderGameBoard();
+        gameBoardModule.cells.forEach(cell => {
+            cell.addEventListener("click", handleClick, {once: true});
+        });
     }
 })();
