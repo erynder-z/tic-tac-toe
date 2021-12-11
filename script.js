@@ -24,18 +24,19 @@ const gameBoardModule = (() => {
 })();
 
 // creates a player object
-const createPlayer = (playerName, mark) => {
+const createPlayer = (playerName, mark, isAI) => {
     return {
         playerName,
         mark,
+        isAI,
     }
 }
 
 // Logic for the gameflow    
 const playGameModule = (() => {
 
-    let player1 = createPlayer("", "X", 0);
-    let player2 = createPlayer("", "O", 0);
+    let player1 = createPlayer("", "X", false);
+    let player2 = createPlayer("", "O", false);
 
     startgame();
 
@@ -57,6 +58,9 @@ const playGameModule = (() => {
                 //update Playernames in the DOM
                 document.getElementById("player1-name").textContent = player1.playerName;
                 document.getElementById("player2-name").textContent = player2.playerName;
+                if (document.getElementById("aiCheck").checked === true) {
+                    player2.isAI = true;
+                }
             }
         });
     }
@@ -92,6 +96,7 @@ const playGameModule = (() => {
         renderGameBoard();
         checkForWinner();
         checkForTie();
+        console.log(player2);
     }
 
     // check if activePlayer has a winning combination in the gameBoardArray
