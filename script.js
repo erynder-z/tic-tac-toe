@@ -24,11 +24,10 @@ const gameBoardModule = (() => {
 })();
 
 // creates a player object
-const createPlayer = (playerName, mark, score) => {
+const createPlayer = (playerName, mark) => {
     return {
         playerName,
         mark,
-        score,
     }
 }
 
@@ -37,6 +36,7 @@ const playGameModule = (() => {
 
     let player1 = createPlayer("", "X", 0);
     let player2 = createPlayer("", "O", 0);
+
     startgame();
 
     //  Hide the startup modal
