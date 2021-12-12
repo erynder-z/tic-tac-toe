@@ -13,7 +13,7 @@ const gameBoardModule = (() => {
         [0, 4, 8],
         [2, 4, 6]
     ]
-    const cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    const cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // indexes of the cells the AI can play
     const gameBoard = document.getElementById("gameboard");
     const cells = document.querySelectorAll("[data-cell]");
     return {
@@ -83,7 +83,7 @@ const playGameModule = (() => {
                 playAI();
             }
         }
-        console.log(turn);
+        console.log(gameBoardModule.cellIndexesAI);
     }
 
 
@@ -101,8 +101,7 @@ const playGameModule = (() => {
     // get the currently active player and inserts the players mark at the corresponding position in the gameBoardArray
     function handleClick() { 
         gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
-        gameBoardModule.cellIndexesAI.splice(this.dataset.index -1, 1, null); 
-        /* updateArrayAI(); */
+        gameBoardModule.cellIndexesAI.splice(this.dataset.index -1, 1, null); //remove currently played cell from AI cell array
         turn++;
         renderGameBoard();
         checkForWinner();
@@ -111,10 +110,7 @@ const playGameModule = (() => {
     }
 
     function playAI() {
-        const randomIndex = Math.floor(Math.random() * gameBoardModule.cellIndexesAI.length);
-        const randomItem = gameBoardModule.cellIndexesAI.splice(randomIndex, 1)[0];
-        gameBoardModule.gameBoardArray.splice(randomItem - 1, 1, activePlayer.mark);
-        gameBoardModule.cellIndexesAI.splice(randomItem - 1, 1, null);
+        getRandomMove();
         turn++;
         renderGameBoard();
         checkForWinner();
@@ -182,9 +178,13 @@ const playGameModule = (() => {
         startgame();
     }
 
-    const updateArrayAI = () => {
-        somethingsomthing;
+    function getRandomMove() { //prevent the AI from choosing null
+        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null);
+        let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)];
+        gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark);
+        gameBoardModule.cellIndexesAI.splice(randomItem, 1, null);
     }
+
 })();
 
 // better way to prevent input to occupied field
