@@ -173,6 +173,7 @@ const playGameModule = (() => {
         won = false;
         activePlayer = undefined;
         turn = 0;
+        gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         renderGameBoard();
         startgame();
