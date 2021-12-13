@@ -85,6 +85,7 @@ body {
     justify-self: center;
     justify-content:flex-start;
     max-width: 95%;
+    height:85%;
     border: solid 2px black;
     font-size: 20px;
 }
