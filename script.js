@@ -74,20 +74,19 @@ const playGameModule = (() => {
     }
 
     // create a simple counter that determines who the currently active player is
-  
     function getActivePlayer() {
         if (turn % 2 === 0) {
             activePlayer = player1;
         } else {
             activePlayer = player2;
             if (player2.isAI === true && turn < 9) {
-                playAI();
+                setTimeout(playAI, 500); // make it look lie the AI needs time to think
             }
         }
     }
 
 
-    // render gameBoard-data
+    // render gameBoard-data to DOM
     const renderGameBoard = () => {
         gameBoardModule.gameBoardArray.forEach(function (item, i) {
             gameBoardModule.cells[i].textContent = item;
@@ -98,23 +97,22 @@ const playGameModule = (() => {
         cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
     });
 
-    // get the currently active player and inserts the players mark at the corresponding position in the gameBoardArray
-    function handleClick() { 
-        // prevent input to an non-empty field
-        if ( gameBoardModule.gameBoardArray[this.dataset.index - 1] === "" ) {
-            gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
-            gameBoardModule.cellIndexesAI.splice(this.dataset.index -1, 1, null); //remove currently played cell from AI cell array
+    // turn for a human player
+    function handleClick() {     
+        if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
+            gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
+            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, null); //remove currently played cell from AI cell array
             turn++;
             renderGameBoard();
             checkForWinner();
             if (won !== true) {
-                checkForTie();  
+                checkForTie();
             }
-            getActivePlayer(); 
+            getActivePlayer();
         }
-           
     }
 
+    // turn for the AI
     function playAI() {
         getRandomMove();
         turn++;
@@ -126,22 +124,24 @@ const playGameModule = (() => {
 
     // check if activePlayer has a winning combination in the gameBoardArray
     const checkForWinner = () => {
+
         // checks gameBoardArray for all of currentplayers' marks and saves their indexes in a new array
         const currentMarkIndexes = [];
         gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : null);
+        
         // loop over all possible winning combinations and check if all three values of a winning combination occur in currentMarkIndexes   
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
             let winningValue1 = gameBoardModule.winningCombinations[i][0];
             let winningValue2 = gameBoardModule.winningCombinations[i][1];
             let winningValue3 = gameBoardModule.winningCombinations[i][2];
-                if (currentMarkIndexes.includes(winningValue1) && currentMarkIndexes.includes(winningValue2) && currentMarkIndexes.includes(winningValue3)) {
-                    winner = activePlayer.playerName;
-                    won = true;
-                    setTimeout(winTheGame, 100);
-                } 
+            if (currentMarkIndexes.includes(winningValue1) && currentMarkIndexes.includes(winningValue2) && currentMarkIndexes.includes(winningValue3)) {
+                winner = activePlayer.playerName;
+                won = true;
+                setTimeout(winTheGame, 100);
+            }
         }
 
-        function winTheGame() {  
+        function winTheGame() {
             alert(`${winner} has won the round`);
             showResetbutton();
         }
@@ -179,11 +179,11 @@ const playGameModule = (() => {
         startgame();
     }
 
-    function getRandomMove() { //prevent the AI from choosing null
-        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null);
-        let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)];
-        gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark);
-        gameBoardModule.cellIndexesAI.splice(randomItem, 1, null);
+    function getRandomMove() {
+        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null); // prevent the AI from choosing null
+        let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
+        gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark); // update the gameBoard
+        gameBoardModule.cellIndexesAI.splice(randomItem, 1, null); // update the list of legal moves for the AI
     }
 
 })();
