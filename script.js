@@ -98,7 +98,7 @@ const playGameModule = (() => {
     });
 
     // turn for a human player
-    function handleClick() {     
+    function handleClick() {
         if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
             gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
             gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, null); //remove currently played cell from AI cell array
@@ -129,7 +129,7 @@ const playGameModule = (() => {
         // checks gameBoardArray for all of currentplayers' marks and saves their indexes in a new array
         const currentMarkIndexes = [];
         gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : null);
-        
+
         // loop over all possible winning combinations and check if all three values of a winning combination occur in currentMarkIndexes   
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
             let winningValue1 = gameBoardModule.winningCombinations[i][0];
@@ -176,8 +176,15 @@ const playGameModule = (() => {
         turn = 0;
         gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+        removeClasses();
         renderGameBoard();
         startgame();
+
+        function removeClasses() {
+            const currentCellArray = Array.from(document.getElementsByClassName("cell"));
+            currentCellArray.forEach(element => element.classList.remove("Xclass"));
+            currentCellArray.forEach(element => element.classList.remove("Oclass"));
+        }
     }
 
     function getRandomMove() {
@@ -194,3 +201,4 @@ const playGameModule = (() => {
 // toggle eventlisteners
 // eventlisteners after player input and before AI move!!
 // prevent AI from making a move after it has lost
+// remove activePlayer class from cells on reset
