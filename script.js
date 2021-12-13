@@ -80,7 +80,7 @@ const playGameModule = (() => {
             activePlayer = player1;
         } else {
             activePlayer = player2;
-            if (player2.isAI === true) {
+            if (player2.isAI === true && turn < 9) {
                 playAI();
             }
         }
