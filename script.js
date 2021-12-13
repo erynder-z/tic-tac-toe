@@ -94,18 +94,22 @@ const playGameModule = (() => {
     }
     // eventListeners for every gameboard-cell
     gameBoardModule.cells.forEach(cell => {
-        cell.addEventListener("click", handleClick, {once: true}); //let the eventListener fire only once for the according cell
+        cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
     });
 
     // get the currently active player and inserts the players mark at the corresponding position in the gameBoardArray
     function handleClick() { 
-        gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
-        gameBoardModule.cellIndexesAI.splice(this.dataset.index -1, 1, null); //remove currently played cell from AI cell array
-        turn++;
-        renderGameBoard();
-        checkForWinner();
-        checkForTie();   
-        getActivePlayer();    
+        // prevent input to an non-empty field
+        if ( gameBoardModule.gameBoardArray[this.dataset.index - 1] === "" ) {
+            gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
+            gameBoardModule.cellIndexesAI.splice(this.dataset.index -1, 1, null); //remove currently played cell from AI cell array
+            turn++;
+            renderGameBoard();
+            checkForWinner();
+            checkForTie();   
+            getActivePlayer(); 
+        }
+           
     }
 
     function playAI() {
@@ -137,9 +141,6 @@ const playGameModule = (() => {
         function winTheGame() {
             alert(`${winner} has won the round`);
             showResetbutton();
-            gameBoardModule.cells.forEach(cell => {
-                cell.removeEventListener("click", handleClick, {once: true});
-            });
         }
     }
 
@@ -152,9 +153,6 @@ const playGameModule = (() => {
     function gameTie() {
         alert("It's a tie!");
         showResetbutton();
-        gameBoardModule.cells.forEach(cell => {
-            cell.removeEventListener("click", handleClick);
-        });
     }
 
     // reset button
@@ -173,9 +171,6 @@ const playGameModule = (() => {
         turn = 0;
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         renderGameBoard();
-        gameBoardModule.cells.forEach(cell => {
-            cell.addEventListener("click", handleClick, {once: true});
-        });
         startgame();
     }
 
