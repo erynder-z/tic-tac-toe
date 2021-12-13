@@ -83,7 +83,6 @@ const playGameModule = (() => {
                 playAI();
             }
         }
-        console.log(gameBoardModule.cellIndexesAI);
     }
 
 
@@ -123,14 +122,16 @@ const playGameModule = (() => {
         // checks gameBoardArray for all of currentplayers' marks and saves their indexes in a new array
         const currentMarkIndexes = [];
         gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : null);
-        // compares the currentMarkIndexes with the winningComnbinations and declares a win if a match is detected
-        ////// better done with an array method??
+        // loop over all possible winning combinations and check if all three values of a winning combination occur in currentMarkIndexes   
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
-            if (JSON.stringify(gameBoardModule.winningCombinations[i]) == JSON.stringify(currentMarkIndexes)) {
-                winner = activePlayer.playerName;
-                setTimeout(winTheGame, 100); // prevents the winner beeing announced before gameboard is rendered. There surely is a better way
-                return
-            }
+            let winningValue1 = gameBoardModule.winningCombinations[i][0];
+            let winningValue2 = gameBoardModule.winningCombinations[i][1];
+            let winningValue3 = gameBoardModule.winningCombinations[i][2];
+                if (currentMarkIndexes.includes(winningValue1) && currentMarkIndexes.includes(winningValue2) && currentMarkIndexes.includes(winningValue3)) {
+                    winner = activePlayer.playerName;
+                    setTimeout(winTheGame, 100);
+                    return
+                } 
         }
 
         function winTheGame() {
