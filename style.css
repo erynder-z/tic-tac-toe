@@ -76,7 +76,25 @@ body {
     }
 }
 
+.player-name-wrap {
+    display: flex;
+    justify-content: center;
+}
 
+#p1-color,
+#p2-color {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+#p1-color {
+    background: var(--playX);
+}
+
+#p2-color {;
+    background: var(--playO);
+}
 
 .p1-container-inner,
 .p2-container-inner {
