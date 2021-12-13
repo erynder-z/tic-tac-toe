@@ -42,6 +42,7 @@ const playGameModule = (() => {
     let activePlayer;
     let turn = 0;
     let winner;
+    let won = false;
 
     startgame();
 
@@ -106,7 +107,9 @@ const playGameModule = (() => {
             turn++;
             renderGameBoard();
             checkForWinner();
-            checkForTie();   
+            if (won !== true) {
+                checkForTie();  
+            }
             getActivePlayer(); 
         }
            
@@ -133,12 +136,12 @@ const playGameModule = (() => {
             let winningValue3 = gameBoardModule.winningCombinations[i][2];
                 if (currentMarkIndexes.includes(winningValue1) && currentMarkIndexes.includes(winningValue2) && currentMarkIndexes.includes(winningValue3)) {
                     winner = activePlayer.playerName;
+                    won = true;
                     setTimeout(winTheGame, 100);
-                    return
                 } 
         }
 
-        function winTheGame() {
+        function winTheGame() {  
             alert(`${winner} has won the round`);
             showResetbutton();
         }
@@ -167,6 +170,7 @@ const playGameModule = (() => {
 
     // reset the game
     const resetGame = () => {
+        won = false;
         activePlayer = undefined;
         turn = 0;
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
@@ -182,6 +186,3 @@ const playGameModule = (() => {
     }
 
 })();
-
-// better way to prevent input to occupied field
-// create AI index array from gameboardarray
