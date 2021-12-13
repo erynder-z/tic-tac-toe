@@ -197,6 +197,14 @@ body {
     font-family: 'Permanent Marker', cursive;
 }
 
+.Xclass {
+    color: var(--playX)
+}
+
+.Oclass {
+    color: var(--playO);
+}
+
 .reset {
     display: flex;
     justify-content: center;

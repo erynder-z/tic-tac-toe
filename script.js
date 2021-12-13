@@ -102,6 +102,7 @@ const playGameModule = (() => {
         if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
             gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
             gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, null); //remove currently played cell from AI cell array
+            this.classList.add(activePlayer.mark + "class"); // add class to color element
             turn++;
             renderGameBoard();
             checkForWinner();
@@ -184,8 +185,12 @@ const playGameModule = (() => {
         let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
         gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark); // update the gameBoard
         gameBoardModule.cellIndexesAI.splice(randomItem, 1, null); // update the list of legal moves for the AI
+        let currentCell = gameBoardModule.cells[randomItem]
+        currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
     }
 
 })();
 
 // toggle eventlisteners
+// eventlisteners after player input and before AI move!!
+// prevent AI from making a move after it has lost
