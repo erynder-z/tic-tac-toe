@@ -13,6 +13,7 @@ const gameBoardModule = (() => {
         [0, 4, 8],
         [2, 4, 6]
     ]
+    const cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // indexes of the cells the AI can play
     const gameBoard = document.getElementById("gameboard");
     const cells = document.querySelectorAll("[data-cell]");
     return {
@@ -20,22 +21,28 @@ const gameBoardModule = (() => {
         gameBoard,
         cells,
         winningCombinations,
+        cellIndexesAI,
     };
 })();
 
 // creates a player object
-const createPlayer = (playerName, mark) => {
+const createPlayer = (playerName, mark, isAI) => {
     return {
         playerName,
         mark,
+        isAI,
     }
 }
 
 // Logic for the gameflow    
 const playGameModule = (() => {
 
-    let player1 = createPlayer("", "X", 0);
-    let player2 = createPlayer("", "O", 0);
+    let player1 = createPlayer("", "X", false);
+    let player2 = createPlayer("", "O", false);
+    let activePlayer;
+    let turn = 0;
+    let winner;
+    let won = false;
 
     startgame();
 
@@ -54,23 +61,29 @@ const playGameModule = (() => {
                 let p2InputField = document.getElementById("nameInputP2");
                 p1InputField.value == "" ? player1.playerName = "Player 1" : player1.playerName = p1InputField.value;
                 p2InputField.value == "" ? player2.playerName = "Player 2" : player2.playerName = p2InputField.value;
-                //update Playernames in the DOM
+                // update Playernames in the DOM
                 document.getElementById("player1-name").textContent = player1.playerName;
                 document.getElementById("player2-name").textContent = player2.playerName;
+                // let player 2 be an AI if the checkbox is checked
+                if (document.getElementById("aiCheck").checked === true) {
+                    player2.isAI = true;
+                }
             }
         });
+        getActivePlayer();
     }
 
     // create a simple counter that determines who the currently active player is
-    let activePlayer;
-    let turn = 0;
-    const getActivePlayer = () => {
+  
+    function getActivePlayer() {
         if (turn % 2 === 0) {
             activePlayer = player1;
         } else {
             activePlayer = player2;
+            if (player2.isAI === true && turn < 9) {
+                playAI();
+            }
         }
-        turn++;
     }
 
 
@@ -82,16 +95,33 @@ const playGameModule = (() => {
     }
     // eventListeners for every gameboard-cell
     gameBoardModule.cells.forEach(cell => {
-        cell.addEventListener("click", handleClick, {once: true}); //let the eventListener fire only once for the according cell
+        cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
     });
 
     // get the currently active player and inserts the players mark at the corresponding position in the gameBoardArray
-    function handleClick() {
-        getActivePlayer();
-        gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
+    function handleClick() { 
+        // prevent input to an non-empty field
+        if ( gameBoardModule.gameBoardArray[this.dataset.index - 1] === "" ) {
+            gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
+            gameBoardModule.cellIndexesAI.splice(this.dataset.index -1, 1, null); //remove currently played cell from AI cell array
+            turn++;
+            renderGameBoard();
+            checkForWinner();
+            if (won !== true) {
+                checkForTie();  
+            }
+            getActivePlayer(); 
+        }
+           
+    }
+
+    function playAI() {
+        getRandomMove();
+        turn++;
         renderGameBoard();
         checkForWinner();
         checkForTie();
+        getActivePlayer();
     }
 
     // check if activePlayer has a winning combination in the gameBoardArray
@@ -106,17 +136,14 @@ const playGameModule = (() => {
             let winningValue3 = gameBoardModule.winningCombinations[i][2];
                 if (currentMarkIndexes.includes(winningValue1) && currentMarkIndexes.includes(winningValue2) && currentMarkIndexes.includes(winningValue3)) {
                     winner = activePlayer.playerName;
+                    won = true;
                     setTimeout(winTheGame, 100);
-                    return
                 } 
         }
 
-        function winTheGame() {
+        function winTheGame() {  
             alert(`${winner} has won the round`);
             showResetbutton();
-            gameBoardModule.cells.forEach(cell => {
-                cell.removeEventListener("click", handleClick, {once: true});
-            });
         }
     }
 
@@ -129,9 +156,6 @@ const playGameModule = (() => {
     function gameTie() {
         alert("It's a tie!");
         showResetbutton();
-        gameBoardModule.cells.forEach(cell => {
-            cell.removeEventListener("click", handleClick);
-        });
     }
 
     // reset button
@@ -146,12 +170,20 @@ const playGameModule = (() => {
 
     // reset the game
     const resetGame = () => {
+        won = false;
         activePlayer = undefined;
         turn = 0;
+        gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         renderGameBoard();
-        gameBoardModule.cells.forEach(cell => {
-            cell.addEventListener("click", handleClick, {once: true});
-        });
+        startgame();
     }
+
+    function getRandomMove() { //prevent the AI from choosing null
+        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null);
+        let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)];
+        gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark);
+        gameBoardModule.cellIndexesAI.splice(randomItem, 1, null);
+    }
+
 })();
