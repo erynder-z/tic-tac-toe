@@ -155,28 +155,28 @@ const playGameModule = (() => {
             if (currentMarkIndexes.includes(winningValue1) && currentMarkIndexes.includes(winningValue2) && currentMarkIndexes.includes(winningValue3)) {
                 winner = activePlayer.playerName;
                 won = true;
-                setTimeout(winTheGame, 100);
+                winTheGame();
             }
         }
 
         function winTheGame() {
             win.textContent = `${winner} has won the round!`;
             removeListeners();
-            showOverModal();
+            setTimeout(showOverModal, 1000);
             showResetbutton();
         }
     }
 
     const checkForTie = () => {
         if (turn === 9) {
-            setTimeout(gameTie, 100);
+            gameTie();
         }
     }
 
     function gameTie() {
         win.textContent = "It's a tie!";
         showResetbutton();
-        showOverModal();
+        setTimeout(showOverModal, 1000);
     }
 
     // shows modal after round is over
@@ -224,6 +224,7 @@ const playGameModule = (() => {
             cell.removeEventListener("click", handleClick);
         });
     }
+
     // logic for the AI
     function getRandomMove() {
         const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null); // prevent the AI from choosing null
