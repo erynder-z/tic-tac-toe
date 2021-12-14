@@ -85,6 +85,8 @@ const playGameModule = (() => {
         } else {
             activePlayer = player2;
             if (player2.isAI === true && turn < 9) {
+                removeListeners(); // remove the evenntListeners for 500ms to prevent input while AI is "thinking"
+                setTimeout(addListeners, 500);
                 setTimeout(playAI, 500); // make it look lie the AI needs time to think
             }
         }
@@ -220,5 +222,4 @@ const playGameModule = (() => {
 
 })();
 
-// toggle eventlisteners
 // eventlisteners after player input and before AI move!!
