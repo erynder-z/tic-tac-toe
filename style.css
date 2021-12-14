@@ -24,6 +24,13 @@ body {
     margin-bottom: 10px;
 }
 
+@media (max-width: 50em) {
+    .head {
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+}
+
 .modal {
     position: fixed;
     z-index: top;
@@ -118,6 +125,7 @@ body {
     .p2-container-inner  {
         height: 85%;
         font-size: 16px;
+        padding: 0;
     }
 
     .p1-container-inner {
@@ -145,6 +153,13 @@ body {
     font-size: 80px;   
 }
 
+@media (max-width: 50em) {
+    .p1-container-inner>h1,
+    .p2-container-inner>h1  {
+        font-size: 50px;
+    }
+
+
 .p1-container-inner>h1 {
     color: var(--playX);
 }
@@ -157,6 +172,11 @@ body {
     padding-bottom: 45px;
 }
 
+@media (max-width: 50em) {
+    .p1-container-inner  {
+        padding-bottom: 0;
+    }
+
 .player-name-container {
     display: flex;
     flex-direction: column;
@@ -166,6 +186,12 @@ body {
 .player-name-container> h2 {
     text-align: center;
 }
+
+@media (max-width: 50em) {
+    .player-name-container  {
+        font-size: 12px;
+    }
+
 
 .checkContainer {
     display: flex;
