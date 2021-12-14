@@ -106,7 +106,7 @@ const playGameModule = (() => {
     // eventListeners for every gameboard-cell
     function addListeners() {
         gameBoardModule.cells.forEach(cell => {
-            cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
+            cell.addEventListener("click", handleClick);
         });
     }
 
@@ -221,7 +221,7 @@ const playGameModule = (() => {
     // remove eventlisteners
     function removeListeners() {
         gameBoardModule.cells.forEach(cell => {
-            cell.removeEventListener("click", handleClick); //let the eventListener fire only once for the according cell
+            cell.removeEventListener("click", handleClick);
         });
     }
     // logic for the AI
