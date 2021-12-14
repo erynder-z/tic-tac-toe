@@ -119,12 +119,17 @@ const playGameModule = (() => {
 
     // turn for the AI
     function playAI() {
-        getRandomMove();
-        turn++;
-        renderGameBoard();
-        checkForWinner();
-        checkForTie();
-        getActivePlayer();
+        if (won === false) {
+            getRandomMove();
+            turn++;
+            renderGameBoard();
+            checkForWinner();
+            checkForTie();
+            getActivePlayer();
+        } else {
+            return
+        }
+        
     }
 
     // check if activePlayer has a winning combination in the gameBoardArray
@@ -205,4 +210,3 @@ const playGameModule = (() => {
 // toggle eventlisteners
 // eventlisteners after player input and before AI move!!
 // prevent AI from making a move after it has lost
-// remove activePlayer class from cells on reset
