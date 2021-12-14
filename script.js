@@ -37,21 +37,26 @@ const createPlayer = (playerName, mark, isAI) => {
 // Logic for the gameflow    
 const playGameModule = (() => {
 
-    let player1 = createPlayer("", "X", false);
-    let player2 = createPlayer("", "O", false);
+    const startButton = document.getElementById("startBtn");
+    const getModal = document.getElementById("newGame-modal");
+    const p1InputField = document.getElementById("nameInputP1");
+    const p2InputField = document.getElementById("nameInputP2");
+    const getOverModal = document.getElementById("over-modal");
+    const win = document.getElementById("winnerID");
+    const resetButton = document.getElementById("resetBtn");
+
+    const player1 = createPlayer("", "X", false);
+    const player2 = createPlayer("", "O", false);
     let activePlayer;
     let turn = 0;
     let winner;
     let won = false;
-    const win = document.getElementById("winnerID");
 
     startgame();
     addListeners();
 
     //  Hide the startup modal
     function startgame() {
-        const startButton = document.getElementById("startBtn");
-        const getModal = document.getElementById("newGame-modal");
         startButton.addEventListener("click", () => {
             getModal.classList.add("hidden");
             getPlayerDetails();
@@ -59,8 +64,6 @@ const playGameModule = (() => {
             //get player names from input fields
             function getPlayerDetails() {
                 // check if player name field is empty and assign a default name
-                let p1InputField = document.getElementById("nameInputP1");
-                let p2InputField = document.getElementById("nameInputP2");
                 p1InputField.value == "" ? player1.playerName = "Player 1" : player1.playerName = p1InputField.value;
                 p2InputField.value == "" ? player2.playerName = "Player 2" : player2.playerName = p2InputField.value;
                 // let player 2 be an AI if the checkbox is checked
@@ -178,19 +181,16 @@ const playGameModule = (() => {
 
     // shows modal after round is over
     const showOverModal = () => {
-        const getOverModal = document.getElementById("over-modal");
-            getOverModal.classList.remove("hidden");
-}
+        getOverModal.classList.remove("hidden");
+    }
 
     // removes modal after round is over
     const removeOverModal = () => {
-        const getOverModal = document.getElementById("over-modal");
-            getOverModal.classList.add("hidden");
-}
+        getOverModal.classList.add("hidden");
+    }
 
     // reset button
     const showResetbutton = () => {
-        const resetButton = document.getElementById("resetBtn");
         resetButton.classList.remove("hidden");
         resetButton.addEventListener("click", () => {
             resetButton.classList.toggle("hidden");
