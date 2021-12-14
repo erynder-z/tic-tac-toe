@@ -43,6 +43,7 @@ const playGameModule = (() => {
     let turn = 0;
     let winner;
     let won = false;
+    const win = document.getElementById("winnerID");
 
     startgame();
     addListeners();
@@ -92,22 +93,21 @@ const playGameModule = (() => {
         }
     }
 
-
     // render gameBoard-data to DOM
     const renderGameBoard = () => {
         gameBoardModule.gameBoardArray.forEach(function (item, i) {
             gameBoardModule.cells[i].textContent = item;
         });
     }
+
     // eventListeners for every gameboard-cell
     function addListeners() {
         gameBoardModule.cells.forEach(cell => {
             cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
         });
     }
-    
 
-    // turn for a human player
+    // turn flow for a human player
     function handleClick() {
         if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
             gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
@@ -123,7 +123,7 @@ const playGameModule = (() => {
         }
     }
 
-    // turn for the AI
+    // turn flow for the AI
     function playAI() {
         if (won === false) {
             getRandomMove();
@@ -135,7 +135,6 @@ const playGameModule = (() => {
         } else {
             return
         }
-        
     }
 
     // check if activePlayer has a winning combination in the gameBoardArray
@@ -158,8 +157,9 @@ const playGameModule = (() => {
         }
 
         function winTheGame() {
-            alert(`${winner} has won the round`);
+            win.textContent = `${winner} has won the round!`;
             removeListeners();
+            showOverModal();
             showResetbutton();
         }
     }
@@ -171,9 +171,22 @@ const playGameModule = (() => {
     }
 
     function gameTie() {
-        alert("It's a tie!");
+        win.textContent = "It's a tie!";
         showResetbutton();
+        showOverModal();
     }
+
+    // shows modal after round is over
+    const showOverModal = () => {
+        const getOverModal = document.getElementById("over-modal");
+            getOverModal.classList.remove("hidden");
+}
+
+    // removes modal after round is over
+    const removeOverModal = () => {
+        const getOverModal = document.getElementById("over-modal");
+            getOverModal.classList.add("hidden");
+}
 
     // reset button
     const showResetbutton = () => {
@@ -185,13 +198,14 @@ const playGameModule = (() => {
         });
     }
 
-    // reset the game
+    // reset all necessary game variables
     const resetGame = () => {
         won = false;
         activePlayer = undefined;
         turn = 0;
         gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+        removeOverModal();
         removeClasses();
         renderGameBoard();
         addListeners();
@@ -210,7 +224,7 @@ const playGameModule = (() => {
             cell.removeEventListener("click", handleClick); //let the eventListener fire only once for the according cell
         });
     }
-
+    // logic for the AI
     function getRandomMove() {
         const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null); // prevent the AI from choosing null
         let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
@@ -221,5 +235,3 @@ const playGameModule = (() => {
     }
 
 })();
-
-// eventlisteners after player input and before AI move!!
