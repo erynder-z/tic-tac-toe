@@ -59,9 +59,8 @@ body {
 .player-container {
     display: flex;
     align-self: center;
-    gap: 5rem;
-    width: 66%;
-    height: 66%;
+    width: 99%;
+    height: 60%;
     justify-content: center;
     align-items: center;
 }
@@ -71,8 +70,7 @@ body {
         flex-direction: column;
         justify-content: space-evenly;
         width: 90%;
-        height:80%;
-        gap: 10px;
+        height:80%;       
     }
 }
 
@@ -104,8 +102,16 @@ body {
     justify-content:flex-start;
     max-width: 95%;
     height:85%;
-    border: solid 2px black;
     font-size: 20px;
+    padding: 25px 0;
+}
+
+.p1-container-inner {
+    border-right: solid 1px black;
+}
+
+.p2-container-inner {
+    border-left: solid 1px black;
 }
 
 @media (max-width: 50em) {
@@ -116,34 +122,38 @@ body {
     }
 }
 
+@media (max-width: 50em) {
+    .p1-container-inner {
+        border-bottom: solid 1px black;
+        border-right: none;
+    }
+
+    .p2-container-inner {
+        border-top: solid 1px black;
+        border-left: none;
+    }
+}
+
 
 .p1-container-inner>h1,
 .p2-container-inner>h1 {
+    font-family: 'Permanent Marker', cursive;
     display: flex;
     justify-content: center;
     align-items: center;
+    align-self: center;
     padding: 0;
     margin: 0;
     height: 75px;
     font-size: 60px;   
 }
 
-@media (max-width: 50em) {
-    .p1-container-inner>h1,
-    .p2-container-inner>h1  {
-        height: 45px;
-        font-size: 28px;
-    }
-}
-
 .p1-container-inner>h1 {
-    background: var(--playX);
-    color: beige;
+    color: var(--playX);
 }
 
 .p2-container-inner>h1 {
-    background: var(--playO);
-    color: beige;
+    color: var(--playO);
 }
 
 .p1-container-inner {
@@ -161,8 +171,29 @@ body {
 }
 
 .checkContainer {
-    height: 20px;
+    display: flex;
+    align-items: center;
+    height: 30px;
     margin-top: 15px;
+    font-size: 20px;
+}
+
+#aiCheck {
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+}
+
+#nameInputP1, #nameInputP1::placeholder {
+    height: 2em;
+    background: var(--playX);
+    color: white;
+}
+
+#nameInputP2, #nameInputP2::placeholder {
+    height: 2em;
+    background: var(--playO);
+    color: white;
 }
 
 
@@ -200,20 +231,27 @@ body {
     align-content: center;
     justify-items: center;
     align-items: center;
-    margin: auto;
+    margin: 50px auto;
 }
 
 .cell {
     background: #FFD369;
     color: #393E46;
-    width: 100px;
-    height: 100px;
+    width: 10rem;
+    height: 10rem   ;
     border: solid 2px black;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 5em;
     font-family: 'Permanent Marker', cursive;
+}
+
+@media (max-width: 50em) {
+    .cell {
+        width: 7rem;
+        height: 7rem;
+    }
 }
 
 .Xclass {
