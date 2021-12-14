@@ -61,12 +61,16 @@ const playGameModule = (() => {
                 let p2InputField = document.getElementById("nameInputP2");
                 p1InputField.value == "" ? player1.playerName = "Player 1" : player1.playerName = p1InputField.value;
                 p2InputField.value == "" ? player2.playerName = "Player 2" : player2.playerName = p2InputField.value;
-                // update Playernames in the DOM
-                document.getElementById("player1-name").textContent = player1.playerName;
-                document.getElementById("player2-name").textContent = player2.playerName;
                 // let player 2 be an AI if the checkbox is checked
                 if (document.getElementById("aiCheck").checked === true) {
                     player2.isAI = true;
+                }
+                // update Playernames in the DOM
+                document.getElementById("player1-name").textContent = player1.playerName;
+                if (player2.isAI === true) {
+                    document.getElementById("player2-name").textContent = player2.playerName + " (AI)";
+                } else {
+                    document.getElementById("player2-name").textContent = player2.playerName;
                 }
             }
         });
