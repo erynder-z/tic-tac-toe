@@ -84,6 +84,9 @@ const playGameModule = (() => {
 
     // create a simple counter that determines who the currently active player is
     function getActivePlayer() {
+        if (won === true) {
+            return
+        }
         if (turn % 2 === 0) {
             activePlayer = player1;
         } else {
