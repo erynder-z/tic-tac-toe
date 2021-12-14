@@ -45,6 +45,7 @@ const playGameModule = (() => {
     let won = false;
 
     startgame();
+    addListeners();
 
     //  Hide the startup modal
     function startgame() {
@@ -97,9 +98,12 @@ const playGameModule = (() => {
         });
     }
     // eventListeners for every gameboard-cell
-    gameBoardModule.cells.forEach(cell => {
-        cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
-    });
+    function addListeners() {
+        gameBoardModule.cells.forEach(cell => {
+            cell.addEventListener("click", handleClick); //let the eventListener fire only once for the according cell
+        });
+    }
+    
 
     // turn for a human player
     function handleClick() {
@@ -153,6 +157,7 @@ const playGameModule = (() => {
 
         function winTheGame() {
             alert(`${winner} has won the round`);
+            removeListeners();
             showResetbutton();
         }
     }
@@ -187,6 +192,7 @@ const playGameModule = (() => {
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
         removeClasses();
         renderGameBoard();
+        addListeners();
         startgame();
 
         function removeClasses() {
@@ -194,6 +200,13 @@ const playGameModule = (() => {
             currentCellArray.forEach(element => element.classList.remove("Xclass"));
             currentCellArray.forEach(element => element.classList.remove("Oclass"));
         }
+    }
+
+    // remove eventlisteners
+    function removeListeners() {
+        gameBoardModule.cells.forEach(cell => {
+            cell.removeEventListener("click", handleClick); //let the eventListener fire only once for the according cell
+        });
     }
 
     function getRandomMove() {
@@ -209,4 +222,3 @@ const playGameModule = (() => {
 
 // toggle eventlisteners
 // eventlisteners after player input and before AI move!!
-// prevent AI from making a move after it has lost
