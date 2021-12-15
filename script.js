@@ -52,6 +52,15 @@ const playGameModule = (() => {
     let winner;
     let won = false;
 
+    let randomWinningArray;
+    let targetMove;
+    let targetArrayValue1;
+    let targetArrayValue2;
+    let targetArrayValue3;
+    let winningArrayValue1;
+    let winningArrayValue2;
+    let winningArrayValue3;
+
     startgame();
     addListeners();
 
@@ -264,7 +273,31 @@ const playGameModule = (() => {
 
     // logic for the medium AI
     function getNormalMove() {
-        
+        // AI tries to get a winning combination
+        checkTargetArray(targetMove);
+
+        function checkTargetArray(targetArray) {
+            if (targetArray === undefined) { //AI grabs a random winning combination
+                targetArray = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)];
+            }
+            targetArrayValue1 = targetArray[0];
+            targetArrayValue2 = targetArray[1];
+            targetArrayValue3 = targetArray[2];
+
+            if (gameBoardModule.gameBoardArray[targetArrayValue1] === "" && gameBoardModule.gameBoardArray[targetArrayValue2] === "" && gameBoardModule.gameBoardArray[targetArrayValue3] === "") { // Ai checks if winning combination is still available
+                console.log("primary" + targetArray);
+                targetMove = targetArray; // if winning combination is still available: set as target
+            } else {
+                searchWinningArray(); // if chosen random winning combination was not available : seach for new one
+            }
+        }
+
+        function searchWinningArray() { 
+            targetMove = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)];// set target to a new random winning combination
+            checkTargetArray(targetMove); // passes new target so be checked for availability
+        }
     }
+    // play target move
+    // if no winning combination is availably : play random move
 
 })();
