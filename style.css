@@ -158,7 +158,7 @@ body {
     .p2-container-inner>h1  {
         font-size: 50px;
     }
-
+}
 
 .p1-container-inner>h1 {
     color: var(--playX);
@@ -176,6 +176,7 @@ body {
     .p1-container-inner  {
         padding-bottom: 0;
     }
+}
 
 .player-name-container {
     display: flex;
@@ -183,15 +184,18 @@ body {
     padding: 0 25px;
 }
 
+
 .player-name-container> h2 {
     text-align: center;
 }
+
+
 
 @media (max-width: 50em) {
     .player-name-container  {
         font-size: 12px;
     }
-
+}
 
 .checkContainer {
     display: flex;
@@ -286,8 +290,6 @@ body {
     font-size: 9em;
     font-family: 'Permanent Marker', cursive;
     transition: all 0.2s;
-    
-   
 }
 
 @media (max-width: 50em) {
