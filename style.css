@@ -253,6 +253,7 @@ body {
     justify-content: center;
     text-align: center;
     color: beige;
+    height: 30vh;
 }
 
 .name-container> h1 {
@@ -268,14 +269,14 @@ body {
 
 .board {
     width: auto;
-    height: 50vh;
+    height: 65vh;
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
     align-content: center;
     justify-items: center;
     align-items: center;
-    margin: 50px auto;
+    margin: auto;
 }
 
 .cell {
@@ -374,6 +375,22 @@ body {
     transition: all 0.5s;
     transform:scale(1.2);
   }
+
+  .myFooterClass {
+    display: flex;
+    background: rgba(0, 0, 0, 0.322);
+    height: 5vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+    color: white;
+}
+
+.myFooterClass> a {
+    color: rgb(60, 255, 0);
+    text-decoration: none;
+}
 
 .hidden {
     display: none;
