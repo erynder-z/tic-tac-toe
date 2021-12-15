@@ -274,9 +274,9 @@ const playGameModule = (() => {
     // logic for the medium AI
     function getNormalMove() {
         // AI tries to get a winning combination
-        checkTargetArray(targetMove);
+        checkTargetMove(targetMove);
 
-        function checkTargetArray(targetArray) {
+        function checkTargetMove(targetArray) {
             if (targetArray === undefined) { //AI grabs a random winning combination
                 targetArray = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)];
             }
@@ -288,13 +288,13 @@ const playGameModule = (() => {
                 console.log("primary" + targetArray);
                 targetMove = targetArray; // if winning combination is still available: set as target
             } else {
-                searchWinningArray(); // if chosen random winning combination was not available : seach for new one
+                searchForWinningArray(); // if chosen random winning combination was not available : seach for new one
             }
         }
 
-        function searchWinningArray() { 
+        function searchForWinningArray() { 
             targetMove = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)];// set target to a new random winning combination
-            checkTargetArray(targetMove); // passes new target so be checked for availability
+            checkTargetMove(targetMove); // passes new target so be checked for availability
         }
     }
     // play target move
