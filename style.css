@@ -211,6 +211,19 @@ body {
     margin-right: 10px;
 }
 
+.lvl-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+    font-size: 18px;
+}
+
+.options {
+    display: flex;
+    justify-content: space-around;
+}
+
 #nameInputP1, #nameInputP1::placeholder {
     height: 2em;
     background: var(--playX);
