@@ -51,9 +51,11 @@ const playGameModule = (() => {
     let turn = 0;
     let winner;
     let won = false;
+    let counter = 8;
 
     let randomWinningArray;
     let targetMove;
+    let normalMove;
     let targetArrayValue1;
     let targetArrayValue2;
     let targetArrayValue3;
@@ -126,7 +128,7 @@ const playGameModule = (() => {
     function handleClick() {
         if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
             gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
-            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, null); //remove currently played cell from AI cell array
+            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, undefined); //remove currently played cell from AI cell array
             this.classList.add(activePlayer.mark + "class"); // add class to color element
             turn++;
             renderGameBoard();
@@ -173,7 +175,7 @@ const playGameModule = (() => {
 
         // checks gameBoardArray for all of currentplayers' marks and saves their indexes in a new array
         const currentMarkIndexes = [];
-        gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : null);
+        gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : undefined);
 
         // loop over all possible winning combinations and check if all three values of a winning combination occur in currentMarkIndexes   
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
@@ -231,8 +233,10 @@ const playGameModule = (() => {
         won = false;
         activePlayer = undefined;
         turn = 0;
+        counter = 8;
         gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+        targetMove = undefined;
         removeOverModal();
         removeClasses();
         renderGameBoard();
@@ -263,10 +267,10 @@ const playGameModule = (() => {
 
     // logic for the easy AI
     function getRandomMove() {
-        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null); // prevent the AI from choosing null
+        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != undefined); // prevent the AI from choosing null
         let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
         gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark); // update the gameBoard
-        gameBoardModule.cellIndexesAI.splice(randomItem, 1, null); // update the list of legal moves for the AI
+        gameBoardModule.cellIndexesAI.splice(randomItem, 1, undefined); // update the list of legal moves for the AI
         let currentCell = gameBoardModule.cells[randomItem]
         currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
     }
@@ -275,6 +279,7 @@ const playGameModule = (() => {
     function getNormalMove() {
         // AI tries to get a winning combination
         checkTargetMove(targetMove);
+        playNormalMove();
 
         function checkTargetMove(targetArray) {
             if (targetArray === undefined) { //AI grabs a random winning combination
@@ -284,20 +289,40 @@ const playGameModule = (() => {
             targetArrayValue2 = targetArray[1];
             targetArrayValue3 = targetArray[2];
 
-            if (gameBoardModule.gameBoardArray[targetArrayValue1] === "" && gameBoardModule.gameBoardArray[targetArrayValue2] === "" && gameBoardModule.gameBoardArray[targetArrayValue3] === "") { // Ai checks if winning combination is still available
-                console.log("primary" + targetArray);
+            if (gameBoardModule.gameBoardArray[targetArrayValue1] !== "X" && gameBoardModule.gameBoardArray[targetArrayValue2] !== "X" && gameBoardModule.gameBoardArray[targetArrayValue3] !== "X") { // Ai checks if winning combination is still available
                 targetMove = targetArray; // if winning combination is still available: set as target
             } else {
+
                 searchForWinningArray(); // if chosen random winning combination was not available : seach for new one
             }
         }
 
-        function searchForWinningArray() { 
-            targetMove = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)];// set target to a new random winning combination
-            checkTargetMove(targetMove); // passes new target so be checked for availability
+        function searchForWinningArray() {
+            if (counter === 0) {
+                getRandomMove();
+            } else {
+                counter--;
+                targetMove = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)]; // set target to a new random winning combination
+                checkTargetMove(targetMove); // passes new target so be checked for availability
+            }
+        }
+
+        function playNormalMove() {
+
+            let legalMove = targetMove;;
+            const checkLegalMove = legalMove.filter(value => value != undefined);
+
+            normalMove = checkLegalMove[Math.floor(Math.random() * checkLegalMove.length)]; // get the value of an random element in the array
+            let index = legalMove.indexOf(normalMove); // get the index of above random value in that array
+
+            gameBoardModule.gameBoardArray.splice(normalMove, 1, activePlayer.mark);
+            legalMove.splice(index, 1, undefined);
+            gameBoardModule.cellIndexesAI.splice(normalMove, 1, undefined);
+
+            let currentCell = gameBoardModule.cells[normalMove];
+            currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
+
         }
     }
-    // play target move
-    // if no winning combination is availably : play random move
 
 })();
