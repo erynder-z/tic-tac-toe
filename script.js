@@ -131,15 +131,31 @@ const playGameModule = (() => {
 
     // turn flow for the AI
     function playAI() {
-        if (won === false) {
-            getRandomMove();
-            turn++;
-            renderGameBoard();
-            checkForWinner();
-            checkForTie();
-            getActivePlayer();
-        } else {
-            return
+        AILevel();
+
+        if (AILevel() === "easy") {
+            if (won === false) {
+                getRandomMove();
+                turn++;
+                renderGameBoard();
+                checkForWinner();
+                checkForTie();
+                getActivePlayer();
+            } else {
+                return
+            }
+
+        } else if (AILevel() === "medium") {
+            if (won === false) {
+                getNormalMove();
+                turn++;
+                renderGameBoard();
+                checkForWinner();
+                checkForTie();
+                getActivePlayer();
+            } else {
+                return
+            }
         }
     }
 
@@ -228,7 +244,15 @@ const playGameModule = (() => {
         });
     }
 
-    // logic for the AI
+    const AILevel = () => {
+        if (document.getElementById("lvl").value === "easy") {
+            return "easy";
+        } else if (document.getElementById("lvl").value === "medium") {
+            return "medium";
+        }
+    }
+
+    // logic for the easy AI
     function getRandomMove() {
         const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != null); // prevent the AI from choosing null
         let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
@@ -236,6 +260,11 @@ const playGameModule = (() => {
         gameBoardModule.cellIndexesAI.splice(randomItem, 1, null); // update the list of legal moves for the AI
         let currentCell = gameBoardModule.cells[randomItem]
         currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
+    }
+
+    // logic for the medium AI
+    function getNormalMove() {
+        
     }
 
 })();
