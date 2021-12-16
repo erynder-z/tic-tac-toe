@@ -53,7 +53,7 @@ const playGameModule = (() => {
     let won = false;
     let counter = 8;
 
-    let randomWinningArray;
+/*     let randomWinningArray;
     let targetMove;
     let normalMove;
     let targetArrayValue1;
@@ -61,7 +61,7 @@ const playGameModule = (() => {
     let targetArrayValue3;
     let winningArrayValue1;
     let winningArrayValue2;
-    let winningArrayValue3;
+    let winningArrayValue3; */
 
     startgame();
     addListeners();
@@ -128,7 +128,7 @@ const playGameModule = (() => {
     function handleClick() {
         if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
             gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
-            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, undefined); //remove currently played cell from AI cell array
+            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, "occupied"); //remove currently played cell from AI cell array
             this.classList.add(activePlayer.mark + "class"); // add class to color element
             turn++;
             renderGameBoard();
@@ -175,7 +175,7 @@ const playGameModule = (() => {
 
         // checks gameBoardArray for all of currentplayers' marks and saves their indexes in a new array
         const currentMarkIndexes = [];
-        gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : undefined);
+        gameBoardModule.gameBoardArray.forEach((mark, index) => mark === activePlayer.mark ? currentMarkIndexes.push(index) : "occupied");
 
         // loop over all possible winning combinations and check if all three values of a winning combination occur in currentMarkIndexes   
         for (let i = 0; i < gameBoardModule.winningCombinations.length; i++) {
@@ -236,7 +236,7 @@ const playGameModule = (() => {
         counter = 8;
         gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
-        targetMove = undefined;
+        /* targetMove = undefined; */
         removeOverModal();
         removeClasses();
         renderGameBoard();
@@ -267,35 +267,101 @@ const playGameModule = (() => {
 
     // logic for the easy AI
     function getRandomMove() {
-        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != undefined); // prevent the AI from choosing null
+        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != "occupied"); // prevent the AI from choosing null
         let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
         gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark); // update the gameBoard
-        gameBoardModule.cellIndexesAI.splice(randomItem, 1, undefined); // update the list of legal moves for the AI
+        gameBoardModule.cellIndexesAI.splice(randomItem, 1, "occupied"); // update the list of legal moves for the AI
         let currentCell = gameBoardModule.cells[randomItem]
         currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
     }
 
     // logic for the medium AI
     function getNormalMove() {
+        chooseTarget(); // select a winning combination to target
+        checkTarget(); // check if winning combination is possible
+        chooseMove(); // choose a random move from chosen target
+        checkMove(); // check if chosen move is possible
+        playTargetMove(); // play move
+        updateAI(); // prevent AI from playing the same move twice
+
+        let targetCombination;
+        let move;
+        const allPossibleWinningCombinationsAI = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        
+
+        function chooseTarget() {
+            if (targetCombination === undefined) { //AI grabs a random winning combination
+                targetCombination = allPossibleWinningCombinationsAI[Math.floor(Math.random() * allPossibleWinningCombinationsAI.length)];
+            }
+            // remove chosen targetCombination from allPossibleWinningCombinationsAI
+            // if targetCombination is invalid, chose another one (= if "X" already occipues any of this targets positions)
+            // also remove that targetCombination from allPossibleWinningCombinationsAI
+            // if no valid target can be found > play random move
+            // return targetMove
+
+        }
+
+        function checkTarget() {
+            // loop over every item in the choosen targetMove
+            // check if all moves from that target are possible (= not "X")
+            // if current combination is not possible > get new one
+            // if current combination is valid > return that combination
+        }
+
+        function playTargetMove() {
+            // chose a random value from target
+            // play that move
+            // return that move
+            // add classes
+        }
+
+        function updateAI() {
+            // remove that value from the targetMove-Array // replace with "occupied"
+            // remove that value in all remaining winning combinations // replace with "occupied"
+            // nremove that value also on the currentCellindexesAI-array // replace with occupied
+            // goto checkTarget
+        }
+
+
+/*     // logic for the medium AI
+    function getNormalMove() {
+        const AIwinningCombinations = gameBoardModule.winningCombinations;
         // AI tries to get a winning combination
         checkTargetMove(targetMove);
+        getLegalMove();
         playNormalMove();
 
         function checkTargetMove(targetArray) {
             if (targetArray === undefined) { //AI grabs a random winning combination
-                targetArray = gameBoardModule.winningCombinations[Math.floor(Math.random() * gameBoardModule.winningCombinations.length)];
+                targetArray = AIwinningCombinations[Math.floor(Math.random() * AIwinningCombinations.length)];
             }
+
+            //if targetarray contains undefined > get another one
+            // if AIwinningcombinations contains no element without undefined > play random move
+        
             targetArrayValue1 = targetArray[0];
             targetArrayValue2 = targetArray[1];
             targetArrayValue3 = targetArray[2];
 
+
             if (gameBoardModule.gameBoardArray[targetArrayValue1] !== "X" && gameBoardModule.gameBoardArray[targetArrayValue2] !== "X" && gameBoardModule.gameBoardArray[targetArrayValue3] !== "X") { // Ai checks if winning combination is still available
                 targetMove = targetArray; // if winning combination is still available: set as target
             } else {
-
                 searchForWinningArray(); // if chosen random winning combination was not available : seach for new one
             }
+            console.log("Target move: ");
+            console.log(targetMove);
         }
+
 
         function searchForWinningArray() {
             if (counter === 0) {
@@ -307,22 +373,37 @@ const playGameModule = (() => {
             }
         }
 
-        function playNormalMove() {
-
-            let legalMove = targetMove;;
+        function getLegalMove() {
+            let legalMove = targetMove;
             const checkLegalMove = legalMove.filter(value => value != undefined);
 
             normalMove = checkLegalMove[Math.floor(Math.random() * checkLegalMove.length)]; // get the value of an random element in the array
             let index = legalMove.indexOf(normalMove); // get the index of above random value in that array
-
-            gameBoardModule.gameBoardArray.splice(normalMove, 1, activePlayer.mark);
             legalMove.splice(index, 1, undefined);
+
             gameBoardModule.cellIndexesAI.splice(normalMove, 1, undefined);
+            for (let i = 0; i < AIwinningCombinations.length; i++) {
+                
+                for (let j = 0; j < AIwinningCombinations[i].length; j++) {
+                    
+                    if (AIwinningCombinations[i][j] === normalMove) {
+                        AIwinningCombinations[i][j] = undefined;
+                    }
+                }
+            }
+
+        
+            console.log("current move: " + normalMove);
+            console.log("AI winning combinations:");
+            console.log(AIwinningCombinations);
+        }
+
+        function playNormalMove() { //prevent playing a field that already has a circle // doe not know where circles have already been put
+            gameBoardModule.gameBoardArray.splice(normalMove, 1, activePlayer.mark);
 
             let currentCell = gameBoardModule.cells[normalMove];
-            currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
-
+            currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;              
         }
-    }
+    } */
 
 })();
