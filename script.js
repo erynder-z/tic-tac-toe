@@ -345,13 +345,11 @@ const playGameModule = (() => {
         }
 
 
-
         function chooseMove() {
+            // filter invalid moves
+            const filteredTargetCombination = targetCombination.filter(value => value != "occupied");
             // chose a random value/move from target
-            AImove = targetCombination[Math.floor(Math.random() * targetCombination.length)];
-           do {
-               AImove = targetCombination[Math.floor(Math.random() * targetCombination.length)];
-            } while (AImove === undefined);
+            AImove = filteredTargetCombination[Math.floor(Math.random() * filteredTargetCombination.length)];
         }
 
 
@@ -365,10 +363,9 @@ const playGameModule = (() => {
 
 
         function updateAI() {
-            // remove that value from the targetMove-Array // replace with "occupied"
+            // remove that value from the targetCombination-Array // replace with "occupied"
             // remove that value in all remaining winning combinations // replace with "occupied"
             // nremove that value also on the currentCellindexesAI-array // replace with occupied
-            // goto checkTarget
         }
 
     }
