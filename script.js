@@ -286,7 +286,7 @@ const playGameModule = (() => {
     // logic for the medium AI
     function getNormalMove() {
 
-        let move;
+        let AImove;
 
         chooseTarget(); // select a winning combination to target
         chooseMove(); // choose a random move from chosen target
@@ -341,21 +341,26 @@ const playGameModule = (() => {
                     getRandomTarget();
                 }
             }
+            console.log(targetCombination);
         }
 
 
 
         function chooseMove() {
-            console.log(targetCombination);
             // chose a random value/move from target
+            AImove = targetCombination[Math.floor(Math.random() * targetCombination.length)];
+           do {
+               AImove = targetCombination[Math.floor(Math.random() * targetCombination.length)];
+            } while (AImove === undefined);
         }
 
 
         function playTargetMove() {
-
-            // play that move
-            // return that move
+            // play  AImove
+            gameBoardModule.gameBoardArray.splice(AImove, 1, activePlayer.mark);
             // add classes
+            let currentCell = gameBoardModule.cells[AImove];
+            currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;    
         }
 
 
