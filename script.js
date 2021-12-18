@@ -357,7 +357,6 @@ const playGameModule = (() => {
             }
         }
 
-
         function chooseMove() {   
             if (targetCombination === "invalid") {
                 return
@@ -372,12 +371,13 @@ const playGameModule = (() => {
         function playTargetMove() {
             if (targetCombination === "invalid") {
                 return
-            }    
+            } else {
             // play  AImove
             gameBoardModule.gameBoardArray.splice(AImove, 1, activePlayer.mark);
             // add classes
             let currentCell = gameBoardModule.cells[AImove];
             currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;    
+            }
         }
 
 
