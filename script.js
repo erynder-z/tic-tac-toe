@@ -255,7 +255,8 @@ const playGameModule = (() => {
         counter = 8;
         gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
-        /* targetMove = undefined; */
+        targetCombination = undefined;
+        needNewTarget = true;
         removeOverModal();
         removeClasses();
         renderGameBoard();
@@ -327,15 +328,17 @@ const playGameModule = (() => {
                 let index = allPossibleWinningCombinationsAI.indexOf(targetCombination);
                 allPossibleWinningCombinationsAI.splice(index, 1);
                 // if no winning combination is possible: set target to invalid
-                if (index < 0) {
+                if (index === -1) {
                     targetCombination = "invalid"
                 }
+                console.log(index);
             }
 
             function checkTarget() {
                 // play random move if target is invalid
                 if (targetCombination === "invalid") {
                     getRandomMove();
+                    return
                 }
                 // loop over every item in the choosen targetMove
                 targetCombinationValue1 = targetCombination[0];
@@ -355,7 +358,10 @@ const playGameModule = (() => {
         }
 
 
-        function chooseMove() {
+        function chooseMove() {   
+            if (targetCombination === "invalid") {
+                return
+            }     
             // filter invalid moves
             const filteredTargetCombination = targetCombination.filter(value => value != "occupied");
             // chose a random value/move from target
@@ -364,6 +370,9 @@ const playGameModule = (() => {
 
 
         function playTargetMove() {
+            if (targetCombination === "invalid") {
+                return
+            }    
             // play  AImove
             gameBoardModule.gameBoardArray.splice(AImove, 1, activePlayer.mark);
             // add classes
@@ -373,6 +382,9 @@ const playGameModule = (() => {
 
 
         function updateAI() {
+            if (targetCombination === "invalid") {
+                return
+            }    
             // remove that value from the targetCombination-Array // replace with "occupied"
             let index = targetCombination.indexOf(AImove);
             targetCombination.splice(index, 1, "occupied");
