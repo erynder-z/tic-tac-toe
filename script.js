@@ -53,7 +53,17 @@ const playGameModule = (() => {
     let won = false;
     let counter = 8;
 
-    const allPossibleWinningCombinationsAI = gameBoardModule.winningCombinations;
+    const allPossibleWinningCombinationsAI =  [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
     let targetCombination;
     let targetCombinationValue1;
     let targetCombinationValue2;
@@ -194,6 +204,7 @@ const playGameModule = (() => {
                 winner = activePlayer.playerName;
                 won = true;
                 winTheGame();
+                return
             }
         }
 
@@ -341,7 +352,6 @@ const playGameModule = (() => {
                     getRandomTarget();
                 }
             }
-            console.log(targetCombination);
         }
 
 
@@ -364,10 +374,19 @@ const playGameModule = (() => {
 
         function updateAI() {
             // remove that value from the targetCombination-Array // replace with "occupied"
-            // remove that value in all remaining winning combinations // replace with "occupied"
-            // nremove that value also on the currentCellindexesAI-array // replace with occupied
+            let index = targetCombination.indexOf(AImove);
+            targetCombination.splice(index, 1, "occupied");
+            // remove that value in all remaining possible winning combinations // replace with "occupied"
+            for (let i = 0; i < allPossibleWinningCombinationsAI.length; i++) {
+                for (let j = 0; j < allPossibleWinningCombinationsAI[i].length; j++) {
+                    if (allPossibleWinningCombinationsAI[i][j] === AImove) {
+                        allPossibleWinningCombinationsAI[i][j] = "occupied";
+                    }
+                }
+            }
+            // remove that value also on the currentCellindexesAI-array // replace with occupied
+            gameBoardModule.cellIndexesAI.splice(AImove, 1, "occupied");
         }
-
     }
 
 
