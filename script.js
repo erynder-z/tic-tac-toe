@@ -1,6 +1,6 @@
 "use strict";
 
-// creates a gameboard object
+// creates a gameboard
 const gameBoardModule = (() => {
     const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
     const winningCombinations = [
@@ -14,6 +14,17 @@ const gameBoardModule = (() => {
         [2, 4, 6]
     ]
     const cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // indexes of the cells the AI can play
+
+    let allPossibleWinningCombinationsAI = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
     const gameBoard = document.getElementById("gameboard");
     const cells = document.querySelectorAll("[data-cell]");
     return {
@@ -22,6 +33,7 @@ const gameBoardModule = (() => {
         cells,
         winningCombinations,
         cellIndexesAI,
+        allPossibleWinningCombinationsAI,
     };
 })();
 
@@ -52,28 +64,15 @@ const playGameModule = (() => {
     let winner;
     let won = false;
 
-    let allPossibleWinningCombinationsAI = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-
     let targetCombination;
     let targetCombinationValue1;
     let targetCombinationValue2;
     let targetCombinationValue3;
     let needNewTarget = true;
 
-    startgame();
-    addListeners();
 
     //  Hide the startup modal
-    function startgame() {
+    const startgame = () => {
         startButton.addEventListener("click", () => {
             getModal.classList.add("hidden");
             getPlayerDetails();
@@ -100,7 +99,7 @@ const playGameModule = (() => {
     }
 
     // create a simple counter that determines who the currently active player is
-    function getActivePlayer() {
+    const getActivePlayer = () => {
         if (won === true) {
             return
         }
@@ -124,7 +123,7 @@ const playGameModule = (() => {
     }
 
     // eventListeners for every gameboard-cell
-    function addListeners() {
+    const addListeners = () => {
         gameBoardModule.cells.forEach(cell => {
             cell.addEventListener("click", handleClick);
         });
@@ -132,10 +131,14 @@ const playGameModule = (() => {
 
     // turn flow for a human player
     function handleClick() {
-        if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") { // prevent input to an non-empty field
-            gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark); // insert activePlayer mark into gameBoard array
-            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, "occupied"); //remove currently played cell from AI cell array
-            this.classList.add(activePlayer.mark + "class"); // add class to color element
+        // input only in empty cells
+        if (gameBoardModule.gameBoardArray[this.dataset.index - 1] === "") {
+            // insert activePlayer mark into gameBoard array
+            gameBoardModule.gameBoardArray.splice(this.dataset.index - 1, 1, activePlayer.mark);
+            // remove currently played cell from AI cell array
+            gameBoardModule.cellIndexesAI.splice(this.dataset.index - 1, 1, "occupied");
+            // add class to color element
+            this.classList.add(activePlayer.mark + "class");
             turn++;
             renderGameBoard();
             checkForWinner();
@@ -147,7 +150,7 @@ const playGameModule = (() => {
     }
 
     // turn flow for the AI
-    function playAI() {
+    const playAI = () => {
         AILevel();
 
         if (AILevel() === "easy") {
@@ -210,7 +213,7 @@ const playGameModule = (() => {
         }
     }
 
-    function gameTie() {
+    const gameTie = () => {
         win.textContent = "It's a tie!";
         showResetbutton();
         setTimeout(showOverModal, 1000);
@@ -242,7 +245,16 @@ const playGameModule = (() => {
         turn = 0;
         gameBoardModule.cellIndexesAI = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         gameBoardModule.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
-        allPossibleWinningCombinationsAI = [[0, 1, 2],[3, 4, 5],[6, 7, 8],[0, 3, 6],[1, 4, 7],[2, 5, 8],[0, 4, 8],[2, 4, 6]];
+        gameBoardModule.allPossibleWinningCombinationsAI = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
         targetCombination = undefined;
         needNewTarget = true;
         removeOverModal();
@@ -250,21 +262,23 @@ const playGameModule = (() => {
         renderGameBoard();
         addListeners();
         startgame();
+    }
 
-        function removeClasses() {
-            const currentCellArray = Array.from(document.getElementsByClassName("cell"));
-            currentCellArray.forEach(element => element.classList.remove("Xclass"));
-            currentCellArray.forEach(element => element.classList.remove("Oclass"));
-        }
+    // remove Player classes
+    const removeClasses = () => {
+        const currentCellArray = Array.from(document.getElementsByClassName("cell"));
+        currentCellArray.forEach(element => element.classList.remove("Xclass"));
+        currentCellArray.forEach(element => element.classList.remove("Oclass"));
     }
 
     // remove eventlisteners
-    function removeListeners() {
+    const removeListeners = () => {
         gameBoardModule.cells.forEach(cell => {
             cell.removeEventListener("click", handleClick);
         });
     }
 
+    // select AI level
     const AILevel = () => {
         if (document.getElementById("lvl").value === "easy") {
             return "easy";
@@ -274,35 +288,46 @@ const playGameModule = (() => {
     }
 
     // logic for the easy AI
-    function getRandomMove() {
-        const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != "occupied"); // prevent the AI from choosing null
-        let randomItem = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)]; // chose a random item from a list of valid moves
-        gameBoardModule.gameBoardArray.splice(randomItem, 1, activePlayer.mark); // update the gameBoard
-        gameBoardModule.cellIndexesAI.splice(randomItem, 1, "occupied"); // update the list of legal moves for the AI
-        let currentCell = gameBoardModule.cells[randomItem]
-        currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;
-        console.log("play RANDOM");
+    const getRandomMove = () => {
+
+        let randomMove
+
+        const chooseMoveEasy = () => {
+            // prevent the AI from choosing occupied field
+            const onlyValidValues = gameBoardModule.cellIndexesAI.filter(value => value != "occupied");
+            // chose a random item from a list of valid moves
+            randomMove = onlyValidValues[Math.floor(Math.random() * onlyValidValues.length)];
+        }
+
+        const playMoveEasy = () => {
+            // update the gameBoard
+            gameBoardModule.gameBoardArray.splice(randomMove, 1, activePlayer.mark);
+            // add class to color element;
+            let currentCell = gameBoardModule.cells[randomMove]
+            currentCell.classList.add(activePlayer.mark + "class");
+        }
+
+        const updateAIEasy = () => {
+            // update the list of legal moves for the AI
+            gameBoardModule.cellIndexesAI.splice(randomMove, 1, "occupied");
+        }
+
+        chooseMoveEasy();
+        playMoveEasy();
+        updateAIEasy();
     }
 
     // logic for the medium AI
-    function getNormalMove() {
+    const getNormalMove = () => {
 
         let AImove;
 
-        chooseTarget(); // select a winning combination to target
-        chooseMove(); // choose a random move from chosen target
-        playTargetMove(); // play move
-        updateAI(); // prevent AI from playing the same move twice
-
-
-        function chooseTarget() {
-
-            getRandomTarget();
+        const chooseTarget = () => {
 
             // choose a random winning combination
-            function getRandomTarget() {
+            const getRandomTarget = () => {
                 if (needNewTarget === true) { // if targetCombination is invalid, chose another one (= if "X" already occipues any of this targets positions)
-                    targetCombination = allPossibleWinningCombinationsAI[Math.floor(Math.random() * allPossibleWinningCombinationsAI.length)];
+                    targetCombination = gameBoardModule.allPossibleWinningCombinationsAI[Math.floor(Math.random() * gameBoardModule.allPossibleWinningCombinationsAI.length)];
                     removeCombinationFromAIPool();
                     // if no valid target can be found > play random move
                 } else if (targetCombination === "invalid") {
@@ -312,17 +337,17 @@ const playGameModule = (() => {
                 checkTarget();
             }
 
-            function removeCombinationFromAIPool() {
+            const removeCombinationFromAIPool = () => {
                 // remove chosen targetCombination from allPossibleWinningCombinationsAI
-                let index = allPossibleWinningCombinationsAI.indexOf(targetCombination);
-                allPossibleWinningCombinationsAI.splice(index, 1);
+                let index = gameBoardModule.allPossibleWinningCombinationsAI.indexOf(targetCombination);
+                gameBoardModule.allPossibleWinningCombinationsAI.splice(index, 1);
                 // if no winning combination is possible: set target to invalid
                 if (index === -1) {
                     targetCombination = "invalid"
                 }
             }
 
-            function checkTarget() {
+            const checkTarget = () => {
                 // play random move if target is invalid
                 if (targetCombination === "invalid") {
                     getRandomMove();
@@ -343,9 +368,10 @@ const playGameModule = (() => {
                     getRandomTarget();
                 }
             }
+            getRandomTarget();
         }
 
-        function chooseMove() {
+        const chooseMove = () => {
             if (targetCombination === "invalid") {
                 return
             } else {
@@ -357,7 +383,7 @@ const playGameModule = (() => {
         }
 
 
-        function playTargetMove() {
+        const playTargetMove = () => {
             if (targetCombination === "invalid" || AImove === undefined) {
                 return
             } else {
@@ -366,12 +392,11 @@ const playGameModule = (() => {
                 // add classes
                 let currentCell = gameBoardModule.cells[AImove];
                 currentCell.classList.add(activePlayer.mark + "class"); // add class to color element;    
-                console.log("play NORMAL")
             }
         }
 
 
-        function updateAI() {
+        const updateAI = () => {
             if (targetCombination === "invalid") {
                 return
             }
@@ -379,16 +404,24 @@ const playGameModule = (() => {
             let index = targetCombination.indexOf(AImove);
             targetCombination.splice(index, 1, "occupied");
             // remove that value in all remaining possible winning combinations // replace with "occupied"
-            for (let i = 0; i < allPossibleWinningCombinationsAI.length; i++) {
-                for (let j = 0; j < allPossibleWinningCombinationsAI[i].length; j++) {
-                    if (allPossibleWinningCombinationsAI[i][j] === AImove) {
-                        allPossibleWinningCombinationsAI[i][j] = "occupied";
+            for (let i = 0; i < gameBoardModule.allPossibleWinningCombinationsAI.length; i++) {
+                for (let j = 0; j < gameBoardModule.allPossibleWinningCombinationsAI[i].length; j++) {
+                    if (gameBoardModule.allPossibleWinningCombinationsAI[i][j] === AImove) {
+                        gameBoardModule.allPossibleWinningCombinationsAI[i][j] = "occupied";
                     }
                 }
             }
             // remove that value also on the currentCellindexesAI-array // replace with occupied
             gameBoardModule.cellIndexesAI.splice(AImove, 1, "occupied");
         }
+
+        chooseTarget();
+        chooseMove();
+        playTargetMove();
+        updateAI();
     }
+
+    startgame();
+    addListeners();
 
 })();
